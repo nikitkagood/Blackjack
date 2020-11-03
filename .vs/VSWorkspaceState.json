@@ -1,9 +1,7 @@
 {
   "ExpandedNodes": [
-    "",
-    "\\Calc",
-    "\\deps"
+    ""
   ],
-  "SelectedNode": "\\CMakeLists.txt",
+  "SelectedNode": "\\.gitignore",
   "PreviewInSolutionExplorer": false
 }

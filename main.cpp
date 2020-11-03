@@ -130,11 +130,11 @@ protected:
     }
 
     string name;
-    unsigned int player_number = 1;
-    unsigned int bank = 0;
+    unsigned int player_number = 1; //номер игрока
+    unsigned int bank = 0; //кол-во фишек
+    vector<string> hand; //рука 
 
 private:
- 
 };
 
 class Dealer : public Player
@@ -155,7 +155,7 @@ public:
     {
         joinGame();
         setName("Player");
-    }
+    }    
 
     HumanPlayer(string name)
     {
