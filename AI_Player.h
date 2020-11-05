@@ -1,22 +1,22 @@
 #pragma once
 
-#include "Player.h"
+#include "IPlayer.h"
 #include "Blackjack.h"
 
 using namespace std;
 
 
-class AI_Player : public Player
+class AI_Player : public IPlayer
 {
 public:
-    virtual void bet() override
-    {
+    //virtual void bet() override
+    //{
 
-    }
-    virtual void bet_double() override
-    {
+    //}
+    //virtual void bet_double() override
+    //{
 
-    }
+    //}
 
 private:
 

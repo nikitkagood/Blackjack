@@ -6,6 +6,6 @@ set(CMAKE_CXX_STANDARD 14)
 add_subdirectory(Calc)
 add_subdirectory(deps/googletest)
 
-add_executable(Blackjack main.cpp "Blackjack.h" "Player.h" "Dealer.h" "HumanPlayer.h" "AI_Player.h")
+add_executable(Blackjack main.cpp "Blackjack.h" "IPlayer.h" "Dealer.h"  "AI_Player.h" "Hand.h")
 
 target_link_libraries(Blackjack Calc)

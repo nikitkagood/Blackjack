@@ -26,16 +26,26 @@ public:
 #endif // DEBUG
     }
 
-    void showCards()
+    void ShowCards()
     {
 
     }
 
-    void setRules(int dealer_stops_on, int bank_per_player)
+    void SetRules(int dealer_stops_on, int bank_per_player)
     {
         this->dealer_stops_on = dealer_stops_on;
         this->bank_per_player = bank_per_player;
     }
+
+    int GetNumberOfPlayers()
+    {
+        return number_of_players;
+    }
+
+    //map<string, vector<string>> GiveDeck()
+    //{
+    //    return deck;
+    //}
 
 private:
     //The order: clubs, diamonds, hearts, spades
@@ -56,32 +66,59 @@ private:
     //    {"AceC", "Ace of clubs"}
     //};
 
-    const map<string, int> deck_template
+    //const map<string, int> deck_template
+    //{
+    //    {"2", 2},
+    //    {"3", 3},
+    //    {"4", 4},
+    //    {"5", 5},
+    //    {"6", 6},
+    //    {"7", 7},
+    //    {"7", 7},
+    //    {"9", 9},
+    //    {"10", 10},
+    //    {"Jack", 10},
+    //    {"Queen", 10},
+    //    {"King", 10},
+    //    {"Ace", 1}
+    //};
+
+        //в игре (в шузе) 4 колоды
+    //const map<string, map<string, int>> deck
+    //{
+    //    { "clubs", deck_template },
+    //    { "diamonds", deck_template },
+    //    { "hearts", deck_template },
+    //    { "spades", deck_template }
+
+    //};
+
+    const vector<string> deck_template
     {
-        {"2", 2},
-        {"3", 3},
-        {"4", 4},
-        {"5", 5},
-        {"6", 6},
-        {"7", 7},
-        {"7", 7},
-        {"9", 9},
-        {"10", 10},
-        {"Jack", 10},
-        {"Queen", 10},
-        {"King", 10},
-        {"Ace", 1}
+        "2", 
+        "3", 
+        "4", 
+        "5", 
+        "6", 
+        "7", 
+        "7", 
+        "9",
+        "10",
+        "Jack", 
+        "Queen",
+        "King",
+        "Ace"
     };
 
-    //в игре (в шузе) 4 колоды
-    const map<string, map<string, int>> deck
+    const map<string, vector<string>> deck
     {
         { "clubs", deck_template },
         { "diamonds", deck_template },
         { "hearts", deck_template },
-        { "spades", deck_template },
+        { "spades", deck_template }
 
     };
+
 
 
 
@@ -91,5 +128,6 @@ private:
     unsigned int dealer_stops_on = 17;
     unsigned int bank_per_player = 100;
     const unsigned int max_number_of_players = 7;
-    unsigned int number_of_players = 0;
+    unsigned int number_of_players = 1;
+    const int max_score = 21;
 };

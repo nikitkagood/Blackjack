@@ -2,32 +2,47 @@
 #include <stdexcept>
 #include <map>
 #include <vector>
+#include <sstream>
+#include <chrono> //может не работать в gcc или на unix
 
 #define DEBUG
 
 #include "Blackjack.h"
-#include "Player.h"
+#include "IPlayer.h"
 #include "Dealer.h"
-#include "HumanPlayer.h"
 #include "AI_Player.h"
-
 
 using namespace std;
 
-void playerJoin()
-{
-
-}
 
 int main()
 {
+    srand(time(nullptr)); //генератор рандома для вытаскивания карт
+
     try
     {
+        Blackjack bj;
+        bj.SetRules(17, 100);
+
+        Dealer dealer;
+
+        //vector<HumanPlayer>
+        IPlayer player1;
+
         while (true)
         {
-            Blackjack bj;
-            bj.setRules(17, 100);
-            HumanPlayer p1;
+            for (size_t player_number = 1; player_number <= bj.GetNumberOfPlayers(); player_number++)
+            {
+                for (size_t i = 0; i < 2; i++) //2 - количество стартовых карт
+                {
+                    //dealer.GiveCard();
+                    player1.
+                }
+                
+            }
+            
+
+           
 
             break;
         }
