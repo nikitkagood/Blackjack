@@ -1,51 +1,31 @@
 #pragma once
 
-#include<map>
+#include <iostream>
+#include <set>
+#include <map>
+#include <stdexcept>
 
-//#include "Player.h"
-//#include "HumanPlayer.h"
-//#include "Dealer.h"
 
 using namespace std;
+
+class IPlayer;
 
 class Blackjack
 {
 public:
-    Blackjack()
-    {
-#ifdef DEBUG
-        cout << "Blackjack constructor" << endl;
-#endif // DEBUG
-        //Dealer d;
-    }
+    Blackjack(){}
 
-    ~Blackjack()
-    {
-#ifdef DEBUG  
-        cout << "Blackjack destructor" << endl;
-#endif // DEBUG
-    }
+    ~Blackjack(){}
 
-    void ShowCards()
-    {
+    void ShowCards(){}
 
-    }
+    void SetRules(int dealer_stops_on, int bank_per_player){}
 
-    void SetRules(int dealer_stops_on, int bank_per_player)
-    {
-        this->dealer_stops_on = dealer_stops_on;
-        this->bank_per_player = bank_per_player;
-    }
+    int GetNumberOfPlayers(){}
 
-    int GetNumberOfPlayers()
-    {
-        return number_of_players;
-    }
+    void UpdateNumberOfPlayers(){}
 
-    //map<string, vector<string>> GiveDeck()
-    //{
-    //    return deck;
-    //}
+    void AddPlayer(IPlayer player){}
 
 private:
     //The order: clubs, diamonds, hearts, spades
@@ -83,7 +63,7 @@ private:
     //    {"Ace", 1}
     //};
 
-        //в игре (в шузе) 4 колоды
+
     //const map<string, map<string, int>> deck
     //{
     //    { "clubs", deck_template },
@@ -93,41 +73,39 @@ private:
 
     //};
 
-    const vector<string> deck_template
-    {
-        "2", 
-        "3", 
-        "4", 
-        "5", 
-        "6", 
-        "7", 
-        "7", 
-        "9",
-        "10",
-        "Jack", 
-        "Queen",
-        "King",
-        "Ace"
-    };
+    //const vector<string> deck_template
+    //{
+    //    "2",
+    //    "3",
+    //    "4",
+    //    "5",
+    //    "6",
+    //    "7",
+    //    "7",
+    //    "9",
+    //    "10",
+    //    "Jack",
+    //    "Queen",
+    //    "King",
+    //    "Ace"
+    //};
 
-    const map<string, vector<string>> deck
-    {
-        { "clubs", deck_template },
-        { "diamonds", deck_template },
-        { "hearts", deck_template },
-        { "spades", deck_template }
+    ////в игре (в шузе) 4 колоды
+    //const map<string, vector<string>> deck
+    //{
+    //    { "clubs", deck_template },
+    //    { "diamonds", deck_template },
+    //    { "hearts", deck_template },
+    //    { "spades", deck_template }
 
-    };
-
-
-
-
-
+    //};
 
     //default rules
     unsigned int dealer_stops_on = 17;
     unsigned int bank_per_player = 100;
     const unsigned int max_number_of_players = 7;
+    vector<IPlayer> players;
     unsigned int number_of_players = 1;
     const int max_score = 21;
+
 };

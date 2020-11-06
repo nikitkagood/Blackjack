@@ -26,17 +26,18 @@ int main()
 
         Dealer dealer;
 
-        //vector<HumanPlayer>
         IPlayer player1;
+        bj.AddPlayer(player1);
+        
 
         while (true)
         {
+            //Раунд начался
             for (size_t player_number = 1; player_number <= bj.GetNumberOfPlayers(); player_number++)
             {
                 for (size_t i = 0; i < 2; i++) //2 - количество стартовых карт
                 {
-                    //dealer.GiveCard();
-                    player1.
+                    dealer.GiveCard(player1);
                 }
                 
             }
@@ -44,7 +45,9 @@ int main()
 
            
 
-            break;
+
+            //Раунд закончился
+            bj.UpdateNumberOfPlayers();
         }
         return -99;
 

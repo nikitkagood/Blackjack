@@ -16,7 +16,7 @@ public:
 #endif // DEBUG
 
         JoinGame();
-        SetName("Player");
+        SetName("Player " + player_number);
     }
 
 #ifdef DEBUG
@@ -25,6 +25,7 @@ public:
         cout << "HumanPlayer destructor" << endl;
     }
 #endif // DEBUG
+
     IPlayer(string name)
     {
 #ifdef DEBUG
@@ -34,9 +35,18 @@ public:
         SetName(name);
     }
 
-    void bet()
+    unsigned int bet(unsigned int ammount)
     {
-
+        if (bank > ammount)
+        {
+            bank -= ammount;
+            return ammount;
+        }
+        else
+        {
+            cout << "You don't have that much" << endl;
+            return 0;
+        }
     }
     void bet_double()
     {
@@ -48,24 +58,37 @@ public:
 
     }
 
-    void TakeCard()
+    pair<string, string> ReceiveCard(pair<string, string> to_receive)
     {
 
+        hand.push_back(to_receive);
+
     }
+
+    //void TakeCard(Dealer dealer)
+    //{
+
+    //}
+
     void Hold()
     {
 
     }
 
-    void loseGame()
+    void loseGame(Blackjack bj)
     {
-        if (true) LeaveGame();
+        if (true) LeaveGame(bj);
     }
 
-    void LeaveGame()
+    void LeaveGame(Blackjack bj)
     {
-
+        //удалить из контейнера игроков
     }
+
+    /*  tuple<string, string> operator += (tuple<string, string>, tuple<string, string>)
+      {
+
+      }*/
 
 private:
     string SetName(string name)
@@ -77,7 +100,8 @@ private:
     unsigned int player_number = 1; //номер игрока
     unsigned int bank = 0; //кол-во фишек
     //vector<string> hand; //рука 
-    tuple<string, string> hand;
+    //tuple<string, string> hand;
+    vector<pair<string, string>> hand;
 
-}
+};
 

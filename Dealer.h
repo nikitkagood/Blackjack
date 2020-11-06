@@ -4,18 +4,19 @@
 
 using namespace std;
 
-
-class Dealer : public IPlayer
+//class Dealer : public IPlayer
+class Dealer
 {
 public:
 
-    tuple<string, string> GiveCard(IPlayer player, DrawCard())
+    void GiveCard(IPlayer player)
     {
         int card_number = rand() % 12 + 0; // от 0 до 13
-        int s = rand() % 3 + 0; // от 0 до 3
+        int suit_number = rand() % 3 + 0; // от 0 до 3
 
-        string card = deck.at(suits[s])[card_number];
-        return tie(suits[s], card);
+        string card = deck.at(suits[suit_number])[card_number];
+
+        player.ReceiveCard(make_pair(card, suits[suit_number]));
     }
 
 private:
