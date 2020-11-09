@@ -3,8 +3,8 @@
 #include <iostream>
 #include <set>
 #include <map>
+#include <vector>
 #include <stdexcept>
-
 
 using namespace std;
 
@@ -13,19 +13,23 @@ class IPlayer;
 class Blackjack
 {
 public:
-    Blackjack(){}
+    Blackjack();
 
-    ~Blackjack(){}
+    ~Blackjack();
 
-    void ShowCards(){}
+    //void ShowCards();
 
-    void SetRules(int dealer_stops_on, int bank_per_player){}
+    void SetRules(const unsigned int& dealer_stops_on, const unsigned int& bank_per_player);
 
-    int GetNumberOfPlayers(){}
+    int GetNumberOfPlayers();
 
-    void UpdateNumberOfPlayers(){}
+    void UpdateNumberOfPlayers();
 
-    void AddPlayer(IPlayer player){}
+    void AddPlayer(const IPlayer& player);
+
+    unsigned int RoundNumber();
+
+    void CountRound();
 
 private:
     //The order: clubs, diamonds, hearts, spades
@@ -107,5 +111,6 @@ private:
     vector<IPlayer> players;
     unsigned int number_of_players = 1;
     const int max_score = 21;
+    unsigned int round_number = 1;
 
 };

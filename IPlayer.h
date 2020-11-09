@@ -4,33 +4,30 @@
 
 #include "Blackjack.h"
 
+#define DEBUG
+
 using namespace std;
+
+//class Dealer;
 
 class IPlayer
 {
 public:
     IPlayer()
     {
-#ifdef DEBUG
-        cout << "HumanPlayer constructor" << endl;
-#endif // DEBUG
+//#ifdef DEBUG
+//        cout << "IPlayer constructor" << endl;
+//#endif // DEBUG
 
         JoinGame();
         SetName("Player " + player_number);
     }
 
-#ifdef DEBUG
-    ~IPlayer()
-    {
-        cout << "HumanPlayer destructor" << endl;
-    }
-#endif // DEBUG
-
     IPlayer(string name)
     {
-#ifdef DEBUG
-        cout << "HumanPlayer constructor" << endl;
-#endif // DEBUG
+//#ifdef DEBUG
+//        cout << "IPlayer constructor" << endl;
+//#endif // DEBUG
         JoinGame();
         SetName(name);
     }
@@ -58,14 +55,22 @@ public:
 
     }
 
-    pair<string, string> ReceiveCard(pair<string, string> to_receive)
+    void ReceiveCard(const pair<string, string>& to_receive)
     {
 
         hand.push_back(to_receive);
 
     }
 
-    //void TakeCard(Dealer dealer)
+    void ShowCards() const
+    {
+        for (auto i : hand)
+        {
+            cout << i.first << " of " << i.second << endl;
+        }
+    }
+
+    //void TakeCard()
     //{
 
     //}
@@ -85,10 +90,12 @@ public:
         //удалить из контейнера игроков
     }
 
-    /*  tuple<string, string> operator += (tuple<string, string>, tuple<string, string>)
-      {
-
-      }*/
+//#ifdef DEBUG
+//    ~IPlayer()
+//    {
+//        cout << "IPlayer destructor" << endl;
+//    }
+//#endif // DEBUG
 
 private:
     string SetName(string name)
@@ -101,7 +108,7 @@ private:
     unsigned int bank = 0; //кол-во фишек
     //vector<string> hand; //рука 
     //tuple<string, string> hand;
-    vector<pair<string, string>> hand;
+    vector<pair<string, string>> hand; //сначала карта, потом масть
 
 };
 

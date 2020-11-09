@@ -4,12 +4,11 @@
 
 using namespace std;
 
-//class Dealer : public IPlayer
 class Dealer
 {
 public:
 
-    void GiveCard(IPlayer player)
+    void GiveCard(IPlayer& player)
     {
         int card_number = rand() % 12 + 0; // от 0 до 13
         int suit_number = rand() % 3 + 0; // от 0 до 3

@@ -1,6 +1,8 @@
 #include "Blackjack.h"
 #include "IPlayer.h"
 
+#define DEBUG
+
 using namespace std;
 
      Blackjack::Blackjack()
@@ -18,12 +20,12 @@ using namespace std;
 #endif // DEBUG
     }
 
-    void Blackjack::ShowCards()
-    {
+    //void Blackjack::ShowCards()
+    //{
 
-    }
+    //}
 
-    void Blackjack::SetRules(int dealer_stops_on, int bank_per_player)
+    void Blackjack::SetRules(const unsigned int& dealer_stops_on, const unsigned int& bank_per_player)
     {
         this->dealer_stops_on = dealer_stops_on;
         this->bank_per_player = bank_per_player;
@@ -39,7 +41,7 @@ using namespace std;
         number_of_players = players.size();
     }
 
-    void Blackjack::AddPlayer(IPlayer player)
+    void Blackjack::AddPlayer(const IPlayer& player)
     {
         //if (players.count(player) == 0)
         //{
@@ -58,4 +60,14 @@ using namespace std;
         {
             throw runtime_error("Could not insert a player!");
         }
+    }
+
+    unsigned int Blackjack::RoundNumber()
+    {
+        return round_number;
+    }
+
+    void Blackjack::CountRound()
+    {
+        ++round_number;
     }

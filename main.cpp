@@ -33,6 +33,7 @@ int main()
         while (true)
         {
             //Раунд начался
+            //Первая раздача
             for (size_t player_number = 1; player_number <= bj.GetNumberOfPlayers(); player_number++)
             {
                 for (size_t i = 0; i < 2; i++) //2 - количество стартовых карт
@@ -41,13 +42,14 @@ int main()
                 }
                 
             }
-            
 
+            player1.ShowCards();
            
 
 
             //Раунд закончился
             bj.UpdateNumberOfPlayers();
+            bj.CountRound();
         }
         return -99;
 
