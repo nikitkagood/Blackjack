@@ -109,7 +109,7 @@ private:
     unsigned int bank_per_player = 100;
     const unsigned int max_number_of_players = 7;
     vector<IPlayer> players;
-    unsigned int number_of_players = 1;
+    unsigned int number_of_players = 1; //Игрока под номером 0 не может быть
     const int max_score = 21;
     unsigned int round_number = 1;
 

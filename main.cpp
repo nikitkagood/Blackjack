@@ -19,6 +19,8 @@ int main()
 {
     srand(time(nullptr)); //генератор рандома для вытаскивания карт
 
+    
+
     try
     {
         Blackjack bj;
@@ -42,8 +44,21 @@ int main()
                 }
                 
             }
-
             player1.ShowCards();
+
+            //for (size_t player_number = 1; player_number <= bj.GetNumberOfPlayers(); player_number++)
+
+            //Ставки. Игроки не могут не ставить
+            player1.bet(20);
+
+            //Решение игрока
+            player1.ShowGameDecisions();
+            
+            player1.MakeGameDecision();
+            //cin >> player1.game_decision;
+            //player1.GameDecision(player1.game_decision);
+
+            
            
 
 

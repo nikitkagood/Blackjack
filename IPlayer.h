@@ -1,14 +1,12 @@
 #pragma once
 
-#include <vector>
+//#include <vector>
 
 #include "Blackjack.h"
 
 #define DEBUG
 
 using namespace std;
-
-//class Dealer;
 
 class IPlayer
 {
@@ -32,63 +30,34 @@ public:
         SetName(name);
     }
 
-    unsigned int bet(unsigned int ammount)
-    {
-        if (bank > ammount)
-        {
-            bank -= ammount;
-            return ammount;
-        }
-        else
-        {
-            cout << "You don't have that much" << endl;
-            return 0;
-        }
-    }
-    void bet_double()
-    {
+    unsigned int bet(unsigned int ammount);
 
-    }
+    void bet_double();
 
-    void JoinGame()
-    {
+    void Hold();
 
-    }
+    void MakeGameDecision();
 
-    void ReceiveCard(const pair<string, string>& to_receive)
-    {
+    string GameDecision(string decision) const;
+    int GameDecision(int decision) const; //overloaded for int
 
-        hand.push_back(to_receive);
+    void JoinGame();
 
-    }
+    void ReceiveCard(const pair<string, string>& to_receive);
 
-    void ShowCards() const
-    {
-        for (auto i : hand)
-        {
-            cout << i.first << " of " << i.second << endl;
-        }
-    }
+    void ShowCards() const;
+
+    void ShowGameDecisions() const;
 
     //void TakeCard()
     //{
 
     //}
 
-    void Hold()
-    {
+    void loseGame(Blackjack bj);
 
-    }
-
-    void loseGame(Blackjack bj)
-    {
-        if (true) LeaveGame(bj);
-    }
-
-    void LeaveGame(Blackjack bj)
-    {
-        //удалить из контейнера игроков
-    }
+    void LeaveGame(Blackjack bj); //удалить из контейнера игроков
+        
 
 //#ifdef DEBUG
 //    ~IPlayer()
@@ -97,11 +66,10 @@ public:
 //    }
 //#endif // DEBUG
 
+    
+
 private:
-    string SetName(string name)
-    {
-        return this->name = name;
-    }
+    string SetName(string name);
 
     string name;
     unsigned int player_number = 1; //номер игрока
@@ -109,6 +77,8 @@ private:
     //vector<string> hand; //рука 
     //tuple<string, string> hand;
     vector<pair<string, string>> hand; //сначала карта, потом масть
+    string game_decision;
+    const map<int, string> game_decisions{ {1, "Take"}, {2, "Double"}, {3, "Hold"} };
 
 };
 
