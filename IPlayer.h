@@ -8,51 +8,35 @@
 
 using namespace std;
 
+
+
 class IPlayer
 {
 public:
-    IPlayer()
-    {
-//#ifdef DEBUG
-//        cout << "IPlayer constructor" << endl;
-//#endif // DEBUG
+    IPlayer();
 
-        JoinGame();
-        SetName("Player " + player_number);
-    }
-
-    IPlayer(string name)
-    {
-//#ifdef DEBUG
-//        cout << "IPlayer constructor" << endl;
-//#endif // DEBUG
-        JoinGame();
-        SetName(name);
-    }
+    IPlayer(string name);
 
     unsigned int bet(unsigned int ammount);
 
     void bet_double();
 
-    void Hold();
+    void Hold(); //переименовать в stand
 
-    void MakeGameDecision();
+    void Hit();
 
-    string GameDecision(string decision) const;
-    int GameDecision(int decision) const; //overloaded for int
+    void MakeGameDecision(const Dealer& d);
+
+    //string GameDecision(string decision) const;
+    //int GameDecision(int decision) const; //перегруза дл€ int
 
     void JoinGame();
 
     void ReceiveCard(const pair<string, string>& to_receive);
 
-    void ShowCards() const;
+    virtual void ShowCards() const;
 
     void ShowGameDecisions() const;
-
-    //void TakeCard()
-    //{
-
-    //}
 
     void loseGame(Blackjack bj);
 
@@ -67,18 +51,18 @@ public:
 //#endif // DEBUG
 
     
-
+protected:
+    //»спользуетс€ и IPlayer, и Dealer
+    vector<pair<string, string>> hand; //сначала карта, потом масть
 private:
+    //“олько IPlayer
     string SetName(string name);
 
     string name;
     unsigned int player_number = 1; //номер игрока
     unsigned int bank = 0; //кол-во фишек
-    //vector<string> hand; //рука 
-    //tuple<string, string> hand;
-    vector<pair<string, string>> hand; //сначала карта, потом масть
     string game_decision;
-    const map<int, string> game_decisions{ {1, "Take"}, {2, "Double"}, {3, "Hold"} };
+    const map<int, string> game_decisions{ {1, "Hit"}, {2, "Double"}, {3, "Stand"} };
 
 };
 

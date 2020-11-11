@@ -9,6 +9,7 @@
 using namespace std;
 
 class IPlayer;
+class Dealer;
 
 class Blackjack
 {

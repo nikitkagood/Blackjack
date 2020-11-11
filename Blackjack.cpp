@@ -43,15 +43,6 @@ using namespace std;
 
     void Blackjack::AddPlayer(const IPlayer& player)
     {
-        //if (players.count(player) == 0)
-        //{
-        //    players.insert(player);
-        //}
-        //else
-        //{
-        //    throw runtime_error("Could not insert a player!");
-        //}
-
         if (true)
         {
             players.push_back(player);

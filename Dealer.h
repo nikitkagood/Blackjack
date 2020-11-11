@@ -4,7 +4,7 @@
 
 using namespace std;
 
-class Dealer
+class Dealer : public IPlayer
 {
 public:
 
@@ -16,6 +16,14 @@ public:
         string card = deck.at(suits[suit_number])[card_number];
 
         player.ReceiveCard(make_pair(card, suits[suit_number]));
+    }
+
+    void ShowCards() const override
+    {
+        for (auto i : hand)
+        {
+            cout << i.first << " of " << i.second << endl;
+        }
     }
 
 private:

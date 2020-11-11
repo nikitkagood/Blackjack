@@ -23,21 +23,30 @@ int main()
 
     try
     {
+        //Создаем игру и устанавливаем правила
         Blackjack bj;
         bj.SetRules(17, 100);
 
+        //Создаем дилера
         Dealer dealer;
 
+        //Создаем игрока или игроков
         IPlayer player1;
-        bj.AddPlayer(player1);
+        bj.AddPlayer(player1); //добавляем игрока в вектор игроков
         
 
-        while (true)
+        while (true) //игровой цикл
         {
+
             //Раунд начался
+            //Ставки
+            player1.bet(20);
+
             //Первая раздача
+            //Дилер раздает игрокам
             for (size_t player_number = 1; player_number <= bj.GetNumberOfPlayers(); player_number++)
             {
+                
                 for (size_t i = 0; i < 2; i++) //2 - количество стартовых карт
                 {
                     dealer.GiveCard(player1);
@@ -46,20 +55,27 @@ int main()
             }
             player1.ShowCards();
 
-            //for (size_t player_number = 1; player_number <= bj.GetNumberOfPlayers(); player_number++)
+            for (size_t i = 0; i < 2; i++) //2 - количество стартовых карт
+            {
+                dealer.GiveCard(dealer);
+            }
+
+            //TODO: Проверить, не 21 ли
+
+            //for (size_t player_number = 1; player_number <= bj.GetNumberOfPlayers(); player_number++) //перебор игроков, если их несколько           
 
             //Ставки. Игроки не могут не ставить
-            player1.bet(20);
+            
 
             //Решение игрока
             player1.ShowGameDecisions();
             
-            player1.MakeGameDecision();
+            player1.MakeGameDecision(dealer);
             //cin >> player1.game_decision;
             //player1.GameDecision(player1.game_decision);
 
             
-           
+            //Подсчет очков, определение победителя
 
 
             //Раунд закончился
@@ -67,7 +83,6 @@ int main()
             bj.CountRound();
         }
         return -99;
-
 
     }
     catch (const runtime_error& re)

@@ -1,4 +1,5 @@
 #include "IPlayer.h"
+#include "Dealer.h"
 
 using namespace std;
 
@@ -44,29 +45,42 @@ using namespace std;
 
     }
 
-    void IPlayer::MakeGameDecision()
+    void IPlayer::Hit()
     {
-        cin >> game_decision;
+
     }
 
-    string IPlayer::GameDecision(string decision) const
+    void IPlayer::MakeGameDecision(const Dealer& d)
     {
-        for (auto i : game_decisions)
+        cin >> game_decision;
+        if (game_decision == "Hit" || game_decision == "hit")
         {
-            if (decision == i.second) return i.second;
+            
         }
-        //else
-        return "-99";
-    }
-    int IPlayer::GameDecision(int decision) const
-    {
-        for (auto i : game_decisions)
+        else if (game_decision == "Stand" || game_decision == "stand")
         {
-            if (decision == i.first) return i.first;
+
         }
-        //else
-        return -99;
     }
+
+    //string IPlayer::GameDecision(string decision) const
+    //{
+    //    for (auto i : game_decisions)
+    //    {
+    //        if (decision == i.second) return i.second;
+    //    }
+    //    //else
+    //    return "-99";
+    //}
+    //int IPlayer::GameDecision(int decision) const
+    //{
+    //    for (auto i : game_decisions)
+    //    {
+    //        if (decision == i.first) return i.first;
+    //    }
+    //    //else
+    //    return -99;
+    //}
 
     void IPlayer::JoinGame()
     {
