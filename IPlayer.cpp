@@ -3,30 +3,43 @@
 
 using namespace std;
 
-     IPlayer::IPlayer()
+IPlayer::IPlayer()
+{
+    //только для Dealer
+}
+
+IPlayer::IPlayer(Blackjack& bj)
     {
         //#ifdef DEBUG
         //        cout << "IPlayer constructor" << endl;
         //#endif // DEBUG
 
-        JoinGame();
-        SetName("Player " + player_number);
+        //JoinGame();
+        SetName("Player " + to_string(player_number));
+        bank = bj.GetBankPerPlayer();
+
     }
 
-     IPlayer::IPlayer(string name)
+     IPlayer::IPlayer(Blackjack& bj, string name)
     {
         //#ifdef DEBUG
         //        cout << "IPlayer constructor" << endl;
         //#endif // DEBUG
-        JoinGame();
+
+        //JoinGame();
         SetName(name);
+        bank = bj.GetBankPerPlayer();
     }
 
-    unsigned int IPlayer::bet(unsigned int ammount)
+    unsigned int IPlayer::bet()
     {
+        cout << "Enter yor bet: ";
+        unsigned int ammount;
+        cin >> ammount;
         if (bank > ammount)
         {
             bank -= ammount;
+            cout << "Your bet is " << ammount << endl;
             return ammount;
         }
         else
@@ -106,8 +119,13 @@ using namespace std;
     {
         for (auto i : game_decisions)
         {
-            cout << i.first << ". " << i.second << ' ';
+            cout << i.first << ". " << i.second << '  ';
         }
+    }
+
+    const vector<pair<string, string>> IPlayer::GetHand() const
+    {
+        return hand;
     }
 
     //void TakeCard()
@@ -124,6 +142,7 @@ using namespace std;
     {
         //удалить из контейнера игроков
     }
+
 
 
     string IPlayer::SetName(string name)

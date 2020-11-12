@@ -31,51 +31,63 @@ int main()
         Dealer dealer;
 
         //Создаем игрока или игроков
-        IPlayer player1;
+        IPlayer player1(bj);
         bj.AddPlayer(player1); //добавляем игрока в вектор игроков
         
 
         while (true) //игровой цикл
         {
-
             //Раунд начался
-            //Ставки
-            player1.bet(20);
+            //Ставки. Игроки не могут не ставить
+            while (player1.bet() <= 0){} //контроль за правильностью ставок пока что вынесен сюда
 
             //Первая раздача
             //Дилер раздает игрокам
             for (size_t player_number = 1; player_number <= bj.GetNumberOfPlayers(); player_number++)
             {
-                
                 for (size_t i = 0; i < 2; i++) //2 - количество стартовых карт
                 {
-                    dealer.GiveCard(player1);
+                    dealer.GiveCard(bj.players[player_number]);
                 }
                 
             }
-            player1.ShowCards();
+
+            for (size_t player_number = 1; player_number <= bj.GetNumberOfPlayers(); player_number++)
+            {
+                bj.players[player_number].ShowCards();
+            }
+            
 
             for (size_t i = 0; i < 2; i++) //2 - количество стартовых карт
             {
                 dealer.GiveCard(dealer);
             }
+            dealer.ShowOneCard();
 
-            //TODO: Проверить, не 21 ли
+            //Проверка что не 21. Если да - игрок не может сделать решение
+            for (size_t player_number = 1; player_number <= bj.GetNumberOfPlayers(); player_number++)
+            {
+                unsigned int score = dealer.CountScore(bj.players[player_number]);
+                if (score < 21)
+                {
+                    //Решение игрока
+                    bj.players[player_number].ShowGameDecisions();
 
-            //for (size_t player_number = 1; player_number <= bj.GetNumberOfPlayers(); player_number++) //перебор игроков, если их несколько           
+                    bj.players[player_number].MakeGameDecision(dealer);
 
-            //Ставки. Игроки не могут не ставить
-            
-
-            //Решение игрока
-            player1.ShowGameDecisions();
-            
-            player1.MakeGameDecision(dealer);
-            //cin >> player1.game_decision;
-            //player1.GameDecision(player1.game_decision);
-
-            
-            //Подсчет очков, определение победителя
+                }
+                else if (score == 21)
+                {
+                    //21 с первых двух кард - это 1.5x выигрыш
+                    //Точно победа, но нужно проверить других игроков
+                }
+                else if (score > 21)
+                {
+                    //Проигрыш
+                }
+                else throw runtime_error("Could not handle the score value!");
+            }
+            //Подсчет очков всех игроков, определение победителя
 
 
             //Раунд закончился

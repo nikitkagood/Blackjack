@@ -15,9 +15,11 @@ class IPlayer
 public:
     IPlayer();
 
-    IPlayer(string name);
+    IPlayer(Blackjack& bj);
 
-    unsigned int bet(unsigned int ammount);
+    IPlayer(Blackjack& bj, string name);
+
+    unsigned int bet();
 
     void bet_double();
 
@@ -34,7 +36,7 @@ public:
 
     void ReceiveCard(const pair<string, string>& to_receive);
 
-    virtual void ShowCards() const;
+    void ShowCards() const;
 
     void ShowGameDecisions() const;
 
@@ -42,6 +44,7 @@ public:
 
     void LeaveGame(Blackjack bj); //удалить из контейнера игроков
         
+    const vector<pair<string, string>> GetHand() const;
 
 //#ifdef DEBUG
 //    ~IPlayer()
@@ -54,12 +57,14 @@ public:
 protected:
     //Используется и IPlayer, и Dealer
     vector<pair<string, string>> hand; //сначала карта, потом масть
+
+
 private:
     //Только IPlayer
     string SetName(string name);
 
     string name;
-    unsigned int player_number = 1; //номер игрока
+    unsigned int player_number = 1; //номер игрока, игрока под номером 0 не может быть
     unsigned int bank = 0; //кол-во фишек
     string game_decision;
     const map<int, string> game_decisions{ {1, "Hit"}, {2, "Double"}, {3, "Stand"} };
