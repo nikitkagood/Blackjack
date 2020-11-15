@@ -3,6 +3,8 @@ project(Blackjack)
 
 set(CMAKE_CXX_STANDARD 14)
 
+#set(CMAKE_CXX_FLAGS "-O3")
+
 add_subdirectory(Calc)
 add_subdirectory(deps/googletest)
 

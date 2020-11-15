@@ -1,7 +1,11 @@
 #pragma once
+//Blackjack - это главный класс игры
 
+
+//ќбъ€влени€, которые подгружаютс€ в другие классы тоже
 #include <iostream>
 #include <string>
+#include <algorithm>
 #include <set>
 #include <map>
 #include <vector>
@@ -35,6 +39,8 @@ public:
 
     void CountRound();
 
+    unsigned int GetDealerStopsOn() const;
+
     void DetermineWinner();
 
     //const vector<IPlayer> GetPlayers() const;
@@ -50,7 +56,6 @@ private:
     const unsigned int max_number_of_players = 7;
 
     unsigned int number_of_players = 1;
-    const int max_score = 21;
     unsigned int round_number = 1;
 
 };

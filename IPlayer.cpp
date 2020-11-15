@@ -63,17 +63,12 @@ IPlayer::IPlayer(Blackjack& bj)
 
     }
 
-    void IPlayer::MakeGameDecision(const Dealer& d)
+    string IPlayer::MakeGameDecision(Dealer& d, IPlayer& player_himself)
     {
         cin >> game_decision;
-        if (game_decision == "Hit" || game_decision == "hit")
-        {
-            
-        }
-        else if (game_decision == "Stand" || game_decision == "stand")
-        {
+        d.ReceiveGameDecision(game_decision, player_himself);
 
-        }
+        return game_decision;
     }
 
     //string IPlayer::GameDecision(string decision) const
@@ -119,7 +114,7 @@ IPlayer::IPlayer(Blackjack& bj)
     {
         for (auto i : game_decisions)
         {
-            cout << i.first << ". " << i.second << '  ';
+            cout << i.first << ". " << i.second << ' ';
         }
     }
 

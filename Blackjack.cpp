@@ -69,6 +69,11 @@ using namespace std;
         ++round_number;
     }
 
+    unsigned int Blackjack::GetDealerStopsOn() const
+    {
+        return dealer_stops_on;
+    }
+
     void Blackjack::DetermineWinner()
     {
 

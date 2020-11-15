@@ -27,7 +27,7 @@ public:
 
     void Hit();
 
-    void MakeGameDecision(const Dealer& d);
+    string MakeGameDecision(Dealer& d, IPlayer& player_himself);
 
     //string GameDecision(string decision) const;
     //int GameDecision(int decision) const; //перегруза для int
@@ -53,7 +53,6 @@ public:
 //    }
 //#endif // DEBUG
 
-    
 protected:
     //Используется и IPlayer, и Dealer
     vector<pair<string, string>> hand; //сначала карта, потом масть
@@ -66,6 +65,7 @@ private:
     string name;
     unsigned int player_number = 1; //номер игрока, игрока под номером 0 не может быть
     unsigned int bank = 0; //кол-во фишек
+    //unsigned int current_bet = 0; //сколько уже поставлено
     string game_decision;
     const map<int, string> game_decisions{ {1, "Hit"}, {2, "Double"}, {3, "Stand"} };
 

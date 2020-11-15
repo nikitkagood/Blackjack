@@ -25,18 +25,21 @@ public:
         cout << "### of ###" << endl;
     }
 
-    unsigned int CountScore(const IPlayer& player)
+    const unsigned int CountScore(const IPlayer& player)
     {
         unsigned int score1 = 0; //очки, где туз равен 1
         unsigned int scoreA = 0; //туз равен 11
         //unsigned int count_aces = 0;
-        //TODO: Ќесколько тузов учитываютс€ как 11 и 1
-        for (auto i : player.GetHand())
-        {
-            score1 += scores_map.at(i.second);
 
-            scoreA += scores_map.at(i.second);
-            if (i.first == "Ace") scoreA += 10;
+        //TODO: Ќесколько тузов учитываютс€ как 11 и 1
+
+        auto hand = player.GetHand();
+        for (size_t i = 0; i < hand.size(); i++)
+        {
+            score1 += scores_map[hand[i].first];
+
+            scoreA += scores_map[hand[i].first];
+            if (hand[i].first == "Ace") scoreA += 10;
         }
 
         if (scoreA > score1 && scoreA <= 21)
@@ -47,19 +50,64 @@ public:
 
     }
 
+    //void ReceiveGameDecision(const string& game_decision, IPlayer& player)
+    //{
+    //    while (true)
+    //    {
+    //        if (game_decision == "Hit" || game_decision == "hit" || game_decision == "1")
+    //        {
+    //            Dealer::GiveCard(player);
+    //        }
+    //        else if (game_decision == "Double" || game_decision == "double" || game_decision == "2")
+    //        {
+    //            player.bet_double();
+    //            break;
+    //        }
+    //        else if (game_decision == "Stand" || game_decision == "stand" || game_decision == "3")
+    //        {
+    //            break;
+    //        }
+    //    }
+
+    //}
+
+    void ReceiveGameDecision(const string& game_decision, IPlayer& player)
+    {
+        if (game_decision == "Hit" || game_decision == "hit" || game_decision == "1")
+        {
+            Dealer::GiveCard(player);
+        }
+        else if (game_decision == "Double" || game_decision == "double" || game_decision == "2")
+        {
+            player.bet_double();
+        }
+        else if (game_decision == "Stand" || game_decision == "stand" || game_decision == "3")
+        {
+            //nothing
+        }
+        else cout << "Wrong command" << endl;
+
+    }
+
+    void CheckScores()
+    {
+        sort(players_scores.begin(), players_scores.end());
+
+        for (auto i : players_scores)
+        {
+            if (i.second > 21) players_scores.erase(i.first);
+        }
+    }
+
+    map<int, int> players_current_bets; //player_number, bet
+    map<int, int> players_scores; //player_number, score.  0 элемент это дилер
+
 private:
     //в игре (в шузе) 4 колоды
-    //const map<string, map<string, int>> deck
-    //{
-    //    { "clubs", deck_template },
-    //    { "diamonds", deck_template },
-    //    { "hearts", deck_template },
-    //    { "spades", deck_template },
 
-    //};
+    
 
-
-    const map<string, int> scores_map
+    map<string, int> scores_map
     {
         {"2", 2},
         {"3", 3},
