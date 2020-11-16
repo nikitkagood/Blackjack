@@ -1,24 +1,25 @@
 #include "Blackjack.h"
 #include "IPlayer.h"
+#include "Dealer.h"
 
-#define DEBUG
+//#define DEBUG
 
 using namespace std;
 
      Blackjack::Blackjack()
     {
-#ifdef DEBUG
-        cout << "Blackjack constructor" << endl;
-#endif // DEBUG
+//#ifdef DEBUG
+//        cout << "Blackjack constructor" << endl;
+//#endif // DEBUG
         IPlayer fake_player;
         players.push_back(fake_player); //игрока под номером и индексом 0 не может быть, забиваем место
     }
 
      Blackjack::~Blackjack()
     {
-#ifdef DEBUG  
-        cout << "Blackjack destructor" << endl;
-#endif // DEBUG
+//#ifdef DEBUG  
+//        cout << "Blackjack destructor" << endl;
+//#endif // DEBUG
     }
 
     //void Blackjack::ShowCards()
@@ -30,6 +31,16 @@ using namespace std;
     {
         this->dealer_stops_on = dealer_stops_on;
         this->bank_per_player = bank_per_player;
+    }
+
+    void Blackjack::ShowPlayers()
+    {
+        cout << "Players are: " << endl;
+        for (auto i : players)
+        {
+            cout << i.GetName() << endl;
+        }
+        cout << endl;
     }
 
     unsigned int Blackjack::GetBankPerPlayer()
@@ -49,19 +60,18 @@ using namespace std;
 
     void Blackjack::AddPlayer(const IPlayer& player)
     {
-        if (true)
-        {
-            players.push_back(player);
-        }
-        else
-        {
-            throw runtime_error("Could not insert a player!");
-        }
+        players.push_back(player);
     }
 
-    unsigned int Blackjack::RoundNumber()
+    //unsigned int Blackjack::GetRoundNumber()
+    //{
+    //    return round_number;
+    //}
+
+    const void Blackjack::ShowRoundNumber() const
     {
-        return round_number;
+        cout << "Round " << round_number;
+        cout << endl;
     }
 
     void Blackjack::CountRound()
@@ -79,12 +89,7 @@ using namespace std;
 
     }
 
-    //const vector<IPlayer> Blackjack::GetPlayers() const
-    //{
-    //    return players;
-    //}
-
-    //void Blackjack::SetPlayers(vector<IPlayer> players)
-    //{
-    //    this->players = players;
-    //}
+    void Blackjack::ResetRound(Dealer& d)
+    {
+        d.ResetRound();
+    }

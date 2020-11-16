@@ -4,8 +4,6 @@
 
 #include "Blackjack.h"
 
-#define DEBUG
-
 using namespace std;
 
 
@@ -23,14 +21,7 @@ public:
 
     void bet_double();
 
-    void Hold(); //переименовать в stand
-
-    void Hit();
-
     string MakeGameDecision(Dealer& d, IPlayer& player_himself);
-
-    //string GameDecision(string decision) const;
-    //int GameDecision(int decision) const; //перегруза для int
 
     void JoinGame();
 
@@ -40,11 +31,15 @@ public:
 
     void ShowGameDecisions() const;
 
-    void loseGame(Blackjack bj);
+    //void loseGame(Blackjack bj);
 
     void LeaveGame(Blackjack bj); //удалить из контейнера игроков
         
     const vector<pair<string, string>> GetHand() const;
+
+    const string GetName() const;
+
+    const unsigned int GetBank() const;
 
 //#ifdef DEBUG
 //    ~IPlayer()
@@ -57,13 +52,12 @@ protected:
     //Используется и IPlayer, и Dealer
     vector<pair<string, string>> hand; //сначала карта, потом масть
 
-
-private:
-    //Только IPlayer
     string SetName(string name);
-
     string name;
-    unsigned int player_number = 1; //номер игрока, игрока под номером 0 не может быть
+private:
+
+
+    //unsigned int player_number = 1; //номер игрока, игрока под номером 0 не может быть
     unsigned int bank = 0; //кол-во фишек
     //unsigned int current_bet = 0; //сколько уже поставлено
     string game_decision;

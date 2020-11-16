@@ -7,6 +7,13 @@ using namespace std;
 class Dealer : public IPlayer
 {
 public:
+    friend class Blackjack;
+
+    Dealer(Blackjack bj)
+    {
+        SetName("Dealer");
+        bj.AddPlayer(*this);
+    }
 
     void GiveCard(IPlayer& player)
     {
@@ -23,6 +30,7 @@ public:
         cout << "Dealer has:" << endl;
         cout << hand[0].first << " of " << hand[0].second << endl;
         cout << "### of ###" << endl;
+        cout << endl;
     }
 
     const unsigned int CountScore(const IPlayer& player)
@@ -73,15 +81,15 @@ public:
 
     void ReceiveGameDecision(const string& game_decision, IPlayer& player)
     {
-        if (game_decision == "Hit" || game_decision == "hit" || game_decision == "1")
+        if (game_decision == "1" || game_decision == "Hit" || game_decision == "hit")
         {
             Dealer::GiveCard(player);
         }
-        else if (game_decision == "Double" || game_decision == "double" || game_decision == "2")
+        else if (game_decision == "2" || game_decision == "Double" || game_decision == "double")
         {
             player.bet_double();
         }
-        else if (game_decision == "Stand" || game_decision == "stand" || game_decision == "3")
+        else if (game_decision == "3" || game_decision == "Stand" || game_decision == "stand")
         {
             //nothing
         }
@@ -91,23 +99,41 @@ public:
 
     void CheckScores()
     {
-        sort(players_scores.begin(), players_scores.end());
+        //sort(players_scores.begin(), players_scores.end());
+
+        ShowScores();
+        
+        unsigned int dealer_score = players_scores[0];
 
         for (auto i : players_scores)
         {
+            
             if (i.second > 21) players_scores.erase(i.first);
+        }
+
+        ShowScores();
+    }
+
+    void ShowScores() //Только для дебага
+    {
+        for (auto i : players_scores)
+        {
+            cout << "Player" << i.first << ": " << i.second << endl;
         }
     }
 
-    map<int, int> players_current_bets; //player_number, bet
-    map<int, int> players_scores; //player_number, score.  0 элемент это дилер
+    map<unsigned int, unsigned int> players_current_bets; //player_number, bet
+    map<unsigned int, unsigned int> players_scores; //player_number, score.  0 элемент это дилер
+
 
 private:
-    //в игре (в шузе) 4 колоды
+    void ResetRound() //только для вызова извне
+    {
+        players_current_bets.clear();
+        players_scores.clear();
+    }
 
-    
-
-    map<string, int> scores_map
+    map<string, unsigned int> scores_map
     {
         {"2", 2},
         {"3", 3},
@@ -141,14 +167,15 @@ private:
         "Ace"
     };
 
+    const vector<string> suits{ "clubs", "diamonds", "hearts", "spades" };
+
+    //TODO: В игре (в шузе) 4 колоды. Или добавить проверку
     const map<string, vector<string>> deck
     {
-        { "clubs", deck_template },
-        { "diamonds", deck_template },
-        { "hearts", deck_template },
-        { "spades", deck_template }
+        { suits[0], deck_template },
+        { suits[1], deck_template },
+        { suits[2], deck_template },
+        { suits[3], deck_template }
 
     };
-
-    const vector<string> suits{ "clubs", "diamonds", "hearts", "spades" };
 };

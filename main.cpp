@@ -5,7 +5,7 @@
 #include <sstream>
 #include <chrono> //может не работать в gcc или на unix
 
-#define DEBUG
+//#define DEBUG
 
 #include "Blackjack.h"
 #include "IPlayer.h"
@@ -27,20 +27,27 @@ int main()
         Blackjack bj;
         bj.SetRules(17, 100);
 
+
         //Создаем игрока или игроков
         IPlayer player1(bj);
-        bj.AddPlayer(player1); //добавляем игрока в вектор игроков
+        //добавляем игрока в вектор игроков
         
+        //Создаем дилера
+        Dealer dealer(bj);
 
         while (true) //игровой цикл
         {
-            //Создаем дилера
-            //Здесь чтобы обнулить все его поля в следующем раунде
-            Dealer dealer;
+            bj.UpdateNumberOfPlayers();
+            bj.CountRound();
+            bj.ShowRoundNumber();
+
+
+            //Показать игроков
+            bj.ShowPlayers();
 
             //Раунд начался
             //Ставки. Игроки не могут не ставить
-            for (size_t player_number = 1; player_number <= bj.GetNumberOfPlayers(); player_number++)
+            for (size_t player_number = 1; player_number < bj.GetNumberOfPlayers(); player_number++)
             {
                 unsigned int bet = 0;
                 while (bet <= 0)
@@ -54,7 +61,7 @@ int main()
 
             //Первая раздача
             //Дилер раздает игрокам
-            for (size_t player_number = 1; player_number <= bj.GetNumberOfPlayers(); player_number++)
+            for (size_t player_number = 1; player_number < bj.GetNumberOfPlayers(); player_number++)
             {
                 for (size_t i = 0; i < 2; i++) //2 - количество стартовых карт
                 {
@@ -63,7 +70,7 @@ int main()
                 
             }
             //Показываем карты игроков
-            for (size_t player_number = 1; player_number <= bj.GetNumberOfPlayers(); player_number++)
+            for (size_t player_number = 1; player_number < bj.GetNumberOfPlayers(); player_number++)
             {
                 bj.players[player_number].ShowCards();
             }
@@ -76,7 +83,7 @@ int main()
             dealer.ShowOneCard();
 
             //Проверка что уже не 21, решения игроков
-            for (size_t player_number = 1; player_number <= bj.GetNumberOfPlayers(); player_number++)
+            for (size_t player_number = 1; player_number < bj.GetNumberOfPlayers(); player_number++)
             {
                 unsigned int score = dealer.CountScore(bj.players[player_number]); //Считаем стоимость первых двух карт
 
@@ -93,7 +100,7 @@ int main()
 
                         score = dealer.CountScore(bj.players[player_number]);
                         
-                        cout << "Debug: Player1 score is: " << score << endl;
+                        //cout << "Debug: Player1 score is: " << score << endl;
 
                         if (decision == "Stand" || decision == "stand" || decision == "3" || score >= 21)
                         {
@@ -118,10 +125,9 @@ int main()
             }
 
             if (true)
-            for (size_t player_number = 1; player_number <= bj.GetNumberOfPlayers(); player_number++)
+            for (size_t player_number = 1; player_number < bj.GetNumberOfPlayers(); player_number++)
             {
                 dealer.CheckScores();
-
             }
             else
             for (size_t i = 0; i < 2; i++) //Дилер берет 2 карты себе. Только если все игроки еще не проиграли
@@ -137,14 +143,15 @@ int main()
                 score = dealer.CountScore(dealer);
             }
 
+            dealer.ShowCards();
+
             dealer.players_scores.insert({ 0, score });
 
             //Подсчет очков всех игроков, определение победителя, выдача выигрыша
             
 
             //Раунд закончился
-            bj.UpdateNumberOfPlayers();
-            bj.CountRound();
+            bj.ResetRound(dealer);
         }
         return -99;
 

@@ -15,8 +15,10 @@ IPlayer::IPlayer(Blackjack& bj)
         //#endif // DEBUG
 
         //JoinGame();
-        SetName("Player " + to_string(player_number));
+        SetName("Player " + to_string(bj.players.size() ));
         bank = bj.GetBankPerPlayer();
+        bj.AddPlayer(*this);
+        
 
     }
 
@@ -29,36 +31,36 @@ IPlayer::IPlayer(Blackjack& bj)
         //JoinGame();
         SetName(name);
         bank = bj.GetBankPerPlayer();
+        bj.AddPlayer(*this);
     }
 
     unsigned int IPlayer::bet()
     {
+        cout << "Your bank is: " << GetBank() << endl;
         cout << "Enter yor bet: ";
         unsigned int ammount;
         cin >> ammount;
-        if (bank > ammount)
+        if (ammount == 0)
+        {
+            cout << "You can't bet nothing" << endl;
+            cout << endl;
+            return 0;
+        }
+        else if (bank > ammount)
         {
             bank -= ammount;
             cout << "Your bet is " << ammount << endl;
+            cout << endl;
             return ammount;
         }
         else
         {
             cout << "You don't have that much" << endl;
+            cout << endl;
             return 0;
         }
     }
     void IPlayer::bet_double()
-    {
-
-    }
-
-    void IPlayer::Hold()
-    {
-
-    }
-
-    void IPlayer::Hit()
     {
 
     }
@@ -104,10 +106,12 @@ IPlayer::IPlayer(Blackjack& bj)
 
     void IPlayer::ShowCards() const
     {
+        cout << GetName() << " has: " << endl;
         for (auto i : hand)
         {
             cout << i.first << " of " << i.second << endl;
         }
+        cout << endl;
     }
 
     void IPlayer::ShowGameDecisions() const
@@ -116,6 +120,7 @@ IPlayer::IPlayer(Blackjack& bj)
         {
             cout << i.first << ". " << i.second << ' ';
         }
+        cout << endl;
     }
 
     const vector<pair<string, string>> IPlayer::GetHand() const
@@ -123,15 +128,21 @@ IPlayer::IPlayer(Blackjack& bj)
         return hand;
     }
 
-    //void TakeCard()
-    //{
-
-    //}
-
-    void IPlayer::loseGame(Blackjack bj)
+    const string IPlayer::GetName() const
     {
-        if (true) LeaveGame(bj);
+        return name;
     }
+
+    const unsigned int IPlayer::GetBank() const
+    {
+        return bank;
+    }
+
+
+    //void IPlayer::loseGame(Blackjack bj)
+    //{
+    //    if (true) LeaveGame(bj);
+    //}
 
     void IPlayer::LeaveGame(Blackjack bj)
     {

@@ -27,6 +27,8 @@ public:
 
     void SetRules(const unsigned int& dealer_stops_on, const unsigned int& bank_per_player);
 
+    void ShowPlayers();
+
     unsigned int GetBankPerPlayer();
 
     int GetNumberOfPlayers();
@@ -35,13 +37,17 @@ public:
 
     void AddPlayer(const IPlayer& player);
 
-    unsigned int RoundNumber();
+    //unsigned int GetRoundNumber();
+
+    const void ShowRoundNumber() const;
 
     void CountRound();
 
     unsigned int GetDealerStopsOn() const;
 
     void DetermineWinner();
+
+    void ResetRound(Dealer& d);
 
     //const vector<IPlayer> GetPlayers() const;
 
@@ -56,6 +62,6 @@ private:
     const unsigned int max_number_of_players = 7;
 
     unsigned int number_of_players = 1;
-    unsigned int round_number = 1;
+    unsigned int round_number = 0;
 
 };
