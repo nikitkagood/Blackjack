@@ -17,9 +17,8 @@ using namespace std;
 
 int main()
 {
+    setlocale(0, "");
     srand(time(nullptr)); //генератор рандома для вытаскивания карт
-
-    
 
     try
     {
@@ -27,13 +26,14 @@ int main()
         Blackjack bj;
         bj.SetRules(17, 100);
 
+        //Создаем дилера
+        Dealer dealer(bj);
 
         //Создаем игрока или игроков
         IPlayer player1(bj);
+        IPlayer player2(bj, "Leha");
         //добавляем игрока в вектор игроков
         
-        //Создаем дилера
-        Dealer dealer(bj);
 
         while (true) //игровой цикл
         {
@@ -117,6 +117,7 @@ int main()
                     //21 с первых двух кард - это 1.5x выигрыш
                     //Точно победа, но нужно проверить других игроков
                     cout << "Blackjack!" << endl;
+                    dealer.players_blackjack.insert({ player_number, true });
                     dealer.players_scores.insert({ player_number, score });
 
                 }
@@ -124,36 +125,28 @@ int main()
 
             }
 
-            if (true)
-            for (size_t player_number = 1; player_number < bj.GetNumberOfPlayers(); player_number++)
-            {
-                dealer.CheckScores();
-            }
-            else
-            for (size_t i = 0; i < 2; i++) //Дилер берет 2 карты себе. Только если все игроки еще не проиграли
-            {
-                dealer.GiveCard(dealer);
-            }
-
-            unsigned int score = dealer.CountScore(dealer);
-            while (score < bj.GetDealerStopsOn())
+            unsigned int d_score = dealer.CountScore(dealer);
+            while (d_score < bj.GetDealerStopsOn())
             {
                 dealer.GiveCard(dealer);
 
-                score = dealer.CountScore(dealer);
+                d_score = dealer.CountScore(dealer);
             }
 
             dealer.ShowCards();
 
-            dealer.players_scores.insert({ 0, score });
+            dealer.players_scores.insert({ 0, d_score });
 
             //Подсчет очков всех игроков, определение победителя, выдача выигрыша
+            dealer.CheckScores();
+            dealer.GiveWin(bj);
             
 
             //Раунд закончился
             bj.ResetRound(dealer);
         }
-        return -99;
+
+        throw runtime_error("Unexpected main loop exit");
 
     }
     catch (const runtime_error& re)

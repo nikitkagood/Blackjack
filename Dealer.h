@@ -9,7 +9,7 @@ class Dealer : public IPlayer
 public:
     friend class Blackjack;
 
-    Dealer(Blackjack bj)
+    Dealer(Blackjack& bj)
     {
         SetName("Dealer");
         bj.AddPlayer(*this);
@@ -58,32 +58,12 @@ public:
 
     }
 
-    //void ReceiveGameDecision(const string& game_decision, IPlayer& player)
-    //{
-    //    while (true)
-    //    {
-    //        if (game_decision == "Hit" || game_decision == "hit" || game_decision == "1")
-    //        {
-    //            Dealer::GiveCard(player);
-    //        }
-    //        else if (game_decision == "Double" || game_decision == "double" || game_decision == "2")
-    //        {
-    //            player.bet_double();
-    //            break;
-    //        }
-    //        else if (game_decision == "Stand" || game_decision == "stand" || game_decision == "3")
-    //        {
-    //            break;
-    //        }
-    //    }
-
-    //}
-
     void ReceiveGameDecision(const string& game_decision, IPlayer& player)
     {
         if (game_decision == "1" || game_decision == "Hit" || game_decision == "hit")
         {
             Dealer::GiveCard(player);
+            player.ShowCards();
         }
         else if (game_decision == "2" || game_decision == "Double" || game_decision == "double")
         {
@@ -101,17 +81,27 @@ public:
     {
         //sort(players_scores.begin(), players_scores.end());
 
+        cout << "Scores before check" << endl;
         ShowScores();
+        cout << endl;
         
         unsigned int dealer_score = players_scores[0];
+        players_scores.erase(0);
 
+        if (dealer_score > 21) dealer_score = 0;
+        //после этого цикла в players_scores должны остаться только не проигравшие
         for (auto i : players_scores)
         {
-            
-            if (i.second > 21) players_scores.erase(i.first);
+            if (i.second > 21 || i.second < dealer_score) 
+                players_scores.erase(i.first);
+            else if (i.second == dealer_score) 
+                players_draws.insert({i.first, true});
+            if (players_scores.empty()) break;
         }
 
+        cout << "Scores after check" << endl;
         ShowScores();
+        cout << endl;
     }
 
     void ShowScores() //Только для дебага
@@ -122,8 +112,39 @@ public:
         }
     }
 
+    void GiveWin(Blackjack& bj)
+    {
+        for (auto i : players_scores)
+        {
+            unsigned int ammount = 0;
+
+            if (players_draws.count(i.first)) //Если ничья
+            {
+                ammount = players_current_bets[i.first];
+                //bj.players[i.first].ChangeBank(ammount);
+                bj.players[i.first].ChangeBank(ammount);
+                cout << bj.players[i.first].GetName() << " draw " << "he received his bet back: " << ammount << endl;
+            }
+            else if (players_blackjack.count(i.first)) //Если блекджек
+            {
+                ammount = players_current_bets[i.first] * 2 * 1.5;
+                bj.players[i.first].ChangeBank(ammount);
+                cout << bj.players[i.first].GetName() << " has Blackjack " << "he received: " << ammount << endl;
+            }
+            else
+            {
+                ammount = players_current_bets[i.first] * 2;
+                bj.players[i.first].ChangeBank(ammount);
+                cout << bj.players[i.first].GetName() << " wins " << "he received: " << ammount << endl;
+            }
+        }
+    }
+
     map<unsigned int, unsigned int> players_current_bets; //player_number, bet
     map<unsigned int, unsigned int> players_scores; //player_number, score.  0 элемент это дилер
+    map<unsigned int, bool> players_draws; //player_number, if draw
+    map<unsigned int, bool> players_blackjack; //player_number, if blackjack 
+
 
 
 private:
@@ -131,7 +152,14 @@ private:
     {
         players_current_bets.clear();
         players_scores.clear();
+        players_draws.clear();
+        players_blackjack.clear(); 
     }
+
+    //void ChangeBank(IPlayer& player, unsigned int ammount)
+    //{
+    //    player.ChangeBank(ammount);
+    //}
 
     map<string, unsigned int> scores_map
     {

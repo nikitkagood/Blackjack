@@ -19,11 +19,6 @@ class Dealer;
 class Blackjack
 {
 public:
-    Blackjack();
-
-    ~Blackjack();
-
-    //void ShowCards();
 
     void SetRules(const unsigned int& dealer_stops_on, const unsigned int& bank_per_player);
 
@@ -37,21 +32,17 @@ public:
 
     void AddPlayer(const IPlayer& player);
 
-    //unsigned int GetRoundNumber();
-
     const void ShowRoundNumber() const;
 
     void CountRound();
 
     unsigned int GetDealerStopsOn() const;
 
-    void DetermineWinner();
+    void CheckPlayersBanks();
 
     void ResetRound(Dealer& d);
 
-    //const vector<IPlayer> GetPlayers() const;
-
-    //void SetPlayers(vector<IPlayer> players);
+    void ResetPlayersHands();
 
     vector<IPlayer> players;
     

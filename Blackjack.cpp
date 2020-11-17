@@ -6,27 +6,6 @@
 
 using namespace std;
 
-     Blackjack::Blackjack()
-    {
-//#ifdef DEBUG
-//        cout << "Blackjack constructor" << endl;
-//#endif // DEBUG
-        IPlayer fake_player;
-        players.push_back(fake_player); //игрока под номером и индексом 0 не может быть, забиваем место
-    }
-
-     Blackjack::~Blackjack()
-    {
-//#ifdef DEBUG  
-//        cout << "Blackjack destructor" << endl;
-//#endif // DEBUG
-    }
-
-    //void Blackjack::ShowCards()
-    //{
-
-    //}
-
     void Blackjack::SetRules(const unsigned int& dealer_stops_on, const unsigned int& bank_per_player)
     {
         this->dealer_stops_on = dealer_stops_on;
@@ -84,12 +63,32 @@ using namespace std;
         return dealer_stops_on;
     }
 
-    void Blackjack::DetermineWinner()
+    void Blackjack::CheckPlayersBanks()
     {
+        for (size_t i = 1; i < players.size(); i++)
+        {
+            auto it = find(players.begin(), players.end(), i);
+            if (players[i].GetBank() <= 0)
+            {
+                cout << players[i].GetName() << " ran out of chips and left the game" << endl;
+                players.erase(it);
+            }
 
+            if (players.empty()) break;
+        }
     }
 
     void Blackjack::ResetRound(Dealer& d)
     {
         d.ResetRound();
+        d.GetHandLink().clear();
+        ResetPlayersHands();
+    }
+
+    void Blackjack::ResetPlayersHands()
+    {
+        for (size_t i = 0; i < players.size(); i++)
+        {
+            players[i].GetHandLink().clear();
+        }
     }

@@ -15,7 +15,9 @@ public:
 
     IPlayer(Blackjack& bj);
 
-    IPlayer(Blackjack& bj, string name);
+    IPlayer(Blackjack& bj, const string& name);
+
+    ~IPlayer();
 
     unsigned int bet();
 
@@ -36,10 +38,13 @@ public:
     void LeaveGame(Blackjack bj); //удалить из контейнера игроков
         
     const vector<pair<string, string>> GetHand() const;
+    vector<pair<string, string>>& GetHandLink();
 
     const string GetName() const;
 
     const unsigned int GetBank() const;
+
+    void ChangeBank(const unsigned int& ammount);
 
 //#ifdef DEBUG
 //    ~IPlayer()
@@ -54,6 +59,8 @@ protected:
 
     string SetName(string name);
     string name;
+
+    
 private:
 
 

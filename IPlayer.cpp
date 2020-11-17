@@ -15,14 +15,14 @@ IPlayer::IPlayer(Blackjack& bj)
         //#endif // DEBUG
 
         //JoinGame();
-        SetName("Player " + to_string(bj.players.size() ));
+        SetName("Player_" + to_string(bj.players.size() ));
         bank = bj.GetBankPerPlayer();
         bj.AddPlayer(*this);
         
 
     }
 
-     IPlayer::IPlayer(Blackjack& bj, string name)
+     IPlayer::IPlayer(Blackjack& bj, const string& name)
     {
         //#ifdef DEBUG
         //        cout << "IPlayer constructor" << endl;
@@ -33,6 +33,11 @@ IPlayer::IPlayer(Blackjack& bj)
         bank = bj.GetBankPerPlayer();
         bj.AddPlayer(*this);
     }
+
+     IPlayer::~IPlayer()
+     {
+
+     }
 
     unsigned int IPlayer::bet()
     {
@@ -68,6 +73,7 @@ IPlayer::IPlayer(Blackjack& bj)
     string IPlayer::MakeGameDecision(Dealer& d, IPlayer& player_himself)
     {
         cin >> game_decision;
+        cout << endl;
         d.ReceiveGameDecision(game_decision, player_himself);
 
         return game_decision;
@@ -118,12 +124,17 @@ IPlayer::IPlayer(Blackjack& bj)
     {
         for (auto i : game_decisions)
         {
-            cout << i.first << ". " << i.second << ' ';
+            cout << i.first << ". " << i.second << "   ";
         }
         cout << endl;
     }
 
     const vector<pair<string, string>> IPlayer::GetHand() const
+    {
+        return hand;
+    }
+
+    vector<pair<string, string>>& IPlayer::GetHandLink()
     {
         return hand;
     }
@@ -155,6 +166,12 @@ IPlayer::IPlayer(Blackjack& bj)
     {
         return this->name = name;
     }
+
+    void IPlayer::ChangeBank(const unsigned int& ammount)
+    {
+        bank += ammount;
+    }
+
 
 
 
