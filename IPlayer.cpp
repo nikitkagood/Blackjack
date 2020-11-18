@@ -65,16 +65,18 @@ IPlayer::IPlayer(Blackjack& bj)
             return 0;
         }
     }
-    void IPlayer::bet_double()
-    {
+    //void IPlayer::bet_double(Dealer d, unsigned int player_number)
+    //{
+    //    bank -= d.players_current_bets[player_number];
+    //    d.players_current_bets[player_number] *= 2;
+    //    cout << GetName() << " betted double";
+    //}
 
-    }
-
-    string IPlayer::MakeGameDecision(Dealer& d, IPlayer& player_himself)
+    string IPlayer::MakeGameDecision(Dealer& d, IPlayer& player_himself, const unsigned int& player_number)
     {
         cin >> game_decision;
         cout << endl;
-        d.ReceiveGameDecision(game_decision, player_himself);
+        d.ReceiveGameDecision(game_decision, player_himself, player_number);
 
         return game_decision;
     }
@@ -167,7 +169,7 @@ IPlayer::IPlayer(Blackjack& bj)
         return this->name = name;
     }
 
-    void IPlayer::ChangeBank(const unsigned int& ammount)
+    void IPlayer::ChangeBank(const int& ammount)
     {
         bank += ammount;
     }

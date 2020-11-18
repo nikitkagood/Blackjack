@@ -21,9 +21,9 @@ public:
 
     unsigned int bet();
 
-    void bet_double();
+    //void bet_double(Dealer d, unsigned int player_number);
 
-    string MakeGameDecision(Dealer& d, IPlayer& player_himself);
+    string MakeGameDecision(Dealer& d, IPlayer& player_himself, const unsigned int& player_number);
 
     void JoinGame();
 
@@ -44,7 +44,7 @@ public:
 
     const unsigned int GetBank() const;
 
-    void ChangeBank(const unsigned int& ammount);
+    void ChangeBank(const int& ammount);
 
 //#ifdef DEBUG
 //    ~IPlayer()

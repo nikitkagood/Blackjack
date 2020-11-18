@@ -15,6 +15,9 @@
 using namespace std;
 
 
+//TODO Выход из игры (в т.ч. когда заканчивается банк)
+//TODO Страховка
+
 int main()
 {
     setlocale(0, "");
@@ -96,7 +99,7 @@ int main()
 
                     while (true)
                     {
-                        string decision = current_player.MakeGameDecision(dealer, current_player);
+                        string decision = current_player.MakeGameDecision(dealer, current_player, player_number);
 
                         score = dealer.CountScore(bj.players[player_number]);
                         

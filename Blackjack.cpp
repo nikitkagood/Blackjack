@@ -42,11 +42,6 @@ using namespace std;
         players.push_back(player);
     }
 
-    //unsigned int Blackjack::GetRoundNumber()
-    //{
-    //    return round_number;
-    //}
-
     const void Blackjack::ShowRoundNumber() const
     {
         cout << "Round " << round_number;

@@ -58,7 +58,7 @@ public:
 
     }
 
-    void ReceiveGameDecision(const string& game_decision, IPlayer& player)
+    void ReceiveGameDecision(const string& game_decision, IPlayer& player, const unsigned int& player_number)
     {
         if (game_decision == "1" || game_decision == "Hit" || game_decision == "hit")
         {
@@ -67,7 +67,9 @@ public:
         }
         else if (game_decision == "2" || game_decision == "Double" || game_decision == "double")
         {
-            player.bet_double();
+            player.ChangeBank(players_current_bets[player_number] * 2);
+            players_current_bets[player_number] *= 2;
+            cout << GetName() << " betted double" << endl;
         }
         else if (game_decision == "3" || game_decision == "Stand" || game_decision == "stand")
         {

@@ -47,7 +47,7 @@ public:
     vector<IPlayer> players;
     
 private:
-    //ќбъ€вленые значени€ - это стандартные правила
+    //ќбъ€вленные значени€ - это стандартные правила
     unsigned int dealer_stops_on = 17;
     unsigned int bank_per_player = 100;
     const unsigned int max_number_of_players = 7;
