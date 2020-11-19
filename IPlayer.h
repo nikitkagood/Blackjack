@@ -17,11 +17,16 @@ public:
 
     IPlayer(Blackjack& bj, const string& name);
 
-    ~IPlayer();
+    //IPlayer(const IPlayer& other); //конструктор копирования
+
+    //~IPlayer();
+
+    //IPlayer& operator = (const IPlayer& player) = delete;
+    IPlayer& operator = (const IPlayer& player);
 
     unsigned int bet();
 
-    //void bet_double(Dealer d, unsigned int player_number);
+    void bet_double(Dealer d, unsigned int player_number);
 
     string MakeGameDecision(Dealer& d, IPlayer& player_himself, const unsigned int& player_number);
 
@@ -32,8 +37,6 @@ public:
     void ShowCards() const;
 
     void ShowGameDecisions() const;
-
-    //void loseGame(Blackjack bj);
 
     void LeaveGame(Blackjack bj); //удалить из контейнера игроков
         

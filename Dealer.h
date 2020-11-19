@@ -39,7 +39,7 @@ public:
         unsigned int scoreA = 0; //туз равен 11
         //unsigned int count_aces = 0;
 
-        //TODO: Несколько тузов учитываются как 11 и 1
+        //TODO: Проверить правильность подсчета тузов
 
         auto hand = player.GetHand();
         for (size_t i = 0; i < hand.size(); i++)
@@ -67,9 +67,10 @@ public:
         }
         else if (game_decision == "2" || game_decision == "Double" || game_decision == "double")
         {
-            player.ChangeBank(players_current_bets[player_number] * 2);
-            players_current_bets[player_number] *= 2;
-            cout << GetName() << " betted double" << endl;
+            //player.ChangeBank(players_current_bets[player_number] * 2);
+            //players_current_bets[player_number] *= 2;
+            //cout << player.GetName() << " betted double" << endl;
+            player.bet_double(*this, player_number);
         }
         else if (game_decision == "3" || game_decision == "Stand" || game_decision == "stand")
         {
@@ -79,26 +80,52 @@ public:
 
     }
 
+    //void ReceiveGameDecision(const string& game_decision, IPlayer& player)
+    //{
+    //    if (game_decision == "1" || game_decision == "Hit" || game_decision == "hit")
+    //    {
+    //        Dealer::GiveCard(player);
+    //        player.ShowCards();
+    //    }
+    //    else if (game_decision == "2" || game_decision == "Double" || game_decision == "double")
+    //    {
+    //        //player.ChangeBank(players_current_bets[player_number] * 2);
+    //        //players_current_bets[player_number] *= 2;
+    //        //cout << GetName() << " betted double" << endl;
+    //    }
+    //    else if (game_decision == "3" || game_decision == "Stand" || game_decision == "stand")
+    //    {
+    //        //nothing
+    //    }
+    //    else cout << "Wrong command" << endl;
+
+    //}
+
     void CheckScores()
     {
-        //sort(players_scores.begin(), players_scores.end());
-
         cout << "Scores before check" << endl;
         ShowScores();
         cout << endl;
         
+        //TODO: ГДЕ-ТО ЗДЕСЬ БАГ
         unsigned int dealer_score = players_scores[0];
         players_scores.erase(0);
 
         if (dealer_score > 21) dealer_score = 0;
         //после этого цикла в players_scores должны остаться только не проигравшие
+        vector<int> players_to_erase;
         for (auto i : players_scores)
         {
-            if (i.second > 21 || i.second < dealer_score) 
-                players_scores.erase(i.first);
+            if (i.second > 21 || i.second < dealer_score)
+                //players_scores.erase(i.first);
+                players_to_erase.push_back(i.first);
             else if (i.second == dealer_score) 
                 players_draws.insert({i.first, true});
-            if (players_scores.empty()) break;
+        }
+
+        for (auto i : players_to_erase)
+        {
+            players_scores.erase(i);
         }
 
         cout << "Scores after check" << endl;
@@ -125,19 +152,19 @@ public:
                 ammount = players_current_bets[i.first];
                 //bj.players[i.first].ChangeBank(ammount);
                 bj.players[i.first].ChangeBank(ammount);
-                cout << bj.players[i.first].GetName() << " draw " << "he received his bet back: " << ammount << endl;
+                cout << " draw! " << bj.players[i.first].GetName() << " received his bet back: " << ammount << endl;
             }
             else if (players_blackjack.count(i.first)) //Если блекджек
             {
                 ammount = players_current_bets[i.first] * 2 * 1.5;
                 bj.players[i.first].ChangeBank(ammount);
-                cout << bj.players[i.first].GetName() << " has Blackjack " << "he received: " << ammount << endl;
+                cout << bj.players[i.first].GetName() << " has Blackjack!" << " He received 1.5x bet: " << ammount << endl;
             }
             else
             {
                 ammount = players_current_bets[i.first] * 2;
                 bj.players[i.first].ChangeBank(ammount);
-                cout << bj.players[i.first].GetName() << " wins " << "he received: " << ammount << endl;
+                cout << bj.players[i.first].GetName() << " wins!" << " He received: " << ammount << endl;
             }
         }
     }

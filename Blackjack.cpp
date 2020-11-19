@@ -15,9 +15,9 @@ using namespace std;
     void Blackjack::ShowPlayers()
     {
         cout << "Players are: " << endl;
-        for (auto i : players)
+        for (size_t i = 1; i < players.size(); i++)
         {
-            cout << i.GetName() << endl;
+            cout << i << ". " << players[i].GetName() << endl;
         }
         cout << endl;
     }
@@ -35,6 +35,7 @@ using namespace std;
     void Blackjack::UpdateNumberOfPlayers()
     {
         number_of_players = players.size();
+        if (number_of_players == 1) EndGame();
     }
 
     void Blackjack::AddPlayer(const IPlayer& player)
@@ -44,8 +45,8 @@ using namespace std;
 
     const void Blackjack::ShowRoundNumber() const
     {
-        cout << "Round " << round_number;
-        cout << endl;
+        cout << "Round " << round_number << endl;
+        cout << "###################" << endl;
     }
 
     void Blackjack::CountRound()
@@ -58,19 +59,25 @@ using namespace std;
         return dealer_stops_on;
     }
 
-    void Blackjack::CheckPlayersBanks()
-    {
-        for (size_t i = 1; i < players.size(); i++)
-        {
-            auto it = find(players.begin(), players.end(), i);
-            if (players[i].GetBank() <= 0)
-            {
-                cout << players[i].GetName() << " ran out of chips and left the game" << endl;
-                players.erase(it);
-            }
+    //void Blackjack::CheckPlayersBanks() //не компилируется
+    //{
+    //    for (size_t i = 1; i < players.size(); i++)
+    //    {
+    //        auto it = find(players.begin(), players.end(), i);
+    //        if (players[i].GetBank() <= 0)
+    //        {
+    //            cout << players[i].GetName() << " ran out of chips and left the game" << endl;
+    //            players.erase(it);
+    //        }
 
-            if (players.empty()) break;
-        }
+    //        if (players.empty()) break;
+    //    }
+    //}
+
+    void Blackjack::ErasePlayer(unsigned int player_number)
+    {
+        //players[player_number].~IPlayer();
+        players.erase(players.begin() + player_number);
     }
 
     void Blackjack::ResetRound(Dealer& d)
@@ -86,4 +93,11 @@ using namespace std;
         {
             players[i].GetHandLink().clear();
         }
+    }
+
+    void Blackjack::EndGame()
+    {
+        cout << "There are no more players left!" << endl;
+        cout << "Exiting..." << endl;
+        exit(1);
     }

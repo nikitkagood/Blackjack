@@ -38,11 +38,15 @@ public:
 
     unsigned int GetDealerStopsOn() const;
 
-    void CheckPlayersBanks();
+    //void CheckPlayersBanks();
+
+    void ErasePlayer(unsigned int player_number);
 
     void ResetRound(Dealer& d);
 
     void ResetPlayersHands();
+
+    void EndGame();
 
     vector<IPlayer> players;
     

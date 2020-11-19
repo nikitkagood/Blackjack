@@ -34,9 +34,21 @@ IPlayer::IPlayer(Blackjack& bj)
         bj.AddPlayer(*this);
     }
 
-     IPlayer::~IPlayer()
-     {
+     //IPlayer::IPlayer(const IPlayer& other)
+     //{
+     //}
 
+     //IPlayer::~IPlayer()
+     //{
+     //}
+
+     IPlayer& IPlayer::operator=(const IPlayer& player)
+     {
+         this->name = player.name;
+         this->bank = player.bank;
+         this->hand = player.hand;
+         this->game_decision = player.game_decision;
+         return *this;
      }
 
     unsigned int IPlayer::bet()
@@ -51,7 +63,7 @@ IPlayer::IPlayer(Blackjack& bj)
             cout << endl;
             return 0;
         }
-        else if (bank > ammount)
+        else if (bank >= ammount)
         {
             bank -= ammount;
             cout << "Your bet is " << ammount << endl;
@@ -65,12 +77,26 @@ IPlayer::IPlayer(Blackjack& bj)
             return 0;
         }
     }
-    //void IPlayer::bet_double(Dealer d, unsigned int player_number)
-    //{
-    //    bank -= d.players_current_bets[player_number];
-    //    d.players_current_bets[player_number] *= 2;
-    //    cout << GetName() << " betted double";
-    //}
+
+    void IPlayer::bet_double(Dealer d, unsigned int player_number)
+    {
+        unsigned int bet = d.players_current_bets[player_number];
+        if (bank >= bet * 2)
+        {
+            //обновляем банк игрока
+            bank -= bet;
+            //обновляем ставки
+            d.players_current_bets[player_number] *= 2;
+
+            cout << IPlayer::GetName() << " betted double" << endl;
+            cout << endl;
+        }
+        else
+        {
+            cout << "You don't have that much" << endl;
+        }
+
+    }
 
     string IPlayer::MakeGameDecision(Dealer& d, IPlayer& player_himself, const unsigned int& player_number)
     {
@@ -80,25 +106,6 @@ IPlayer::IPlayer(Blackjack& bj)
 
         return game_decision;
     }
-
-    //string IPlayer::GameDecision(string decision) const
-    //{
-    //    for (auto i : game_decisions)
-    //    {
-    //        if (decision == i.second) return i.second;
-    //    }
-    //    //else
-    //    return "-99";
-    //}
-    //int IPlayer::GameDecision(int decision) const
-    //{
-    //    for (auto i : game_decisions)
-    //    {
-    //        if (decision == i.first) return i.first;
-    //    }
-    //    //else
-    //    return -99;
-    //}
 
     void IPlayer::JoinGame()
     {
@@ -160,6 +167,7 @@ IPlayer::IPlayer(Blackjack& bj)
     void IPlayer::LeaveGame(Blackjack bj)
     {
         //удалить из контейнера игроков
+        //bj.players.erase(bj.players.begin());
     }
 
 

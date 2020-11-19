@@ -17,6 +17,7 @@ using namespace std;
 
 //TODO Выход из игры (в т.ч. когда заканчивается банк)
 //TODO Страховка
+//Пофиксить баг, который происходит после Scores before check
 
 int main()
 {
@@ -33,17 +34,17 @@ int main()
         Dealer dealer(bj);
 
         //Создаем игрока или игроков
-        IPlayer player1(bj);
-        IPlayer player2(bj, "Leha");
+        IPlayer player1(bj, "Никита");
+        //IPlayer player2(bj, "Leha");
         //добавляем игрока в вектор игроков
+        
         
 
         while (true) //игровой цикл
         {
-            bj.UpdateNumberOfPlayers();
+            bj.UpdateNumberOfPlayers(); //также проверяет есть ли игроки в игре
             bj.CountRound();
             bj.ShowRoundNumber();
-
 
             //Показать игроков
             bj.ShowPlayers();
@@ -61,7 +62,6 @@ int main()
                 dealer.players_current_bets.insert({ player_number, bet });
             }
             
-
             //Первая раздача
             //Дилер раздает игрокам
             for (size_t player_number = 1; player_number < bj.GetNumberOfPlayers(); player_number++)
@@ -88,28 +88,29 @@ int main()
             //Проверка что уже не 21, решения игроков
             for (size_t player_number = 1; player_number < bj.GetNumberOfPlayers(); player_number++)
             {
-                unsigned int score = dealer.CountScore(bj.players[player_number]); //Считаем стоимость первых двух карт
+                unsigned int score = dealer.CountScore(bj.players[player_number]);
 
                 if (score < 21)
                 {
                     //Решение игрока
                     IPlayer& current_player = bj.players[player_number];
 
-                    current_player.ShowGameDecisions(); //Показываем возможные решения
-
                     while (true)
                     {
+                        current_player.ShowGameDecisions(); //Показываем возможные решения
+
                         string decision = current_player.MakeGameDecision(dealer, current_player, player_number);
 
                         score = dealer.CountScore(bj.players[player_number]);
                         
-                        //cout << "Debug: Player1 score is: " << score << endl;
 
-                        if (decision == "Stand" || decision == "stand" || decision == "3" || score >= 21)
+                        if (decision == "Stand" || decision == "stand" || decision == "3" || score >= 21) break;
+                        if (decision == "Double" || decision == "dobule" || decision == "2")
                         {
+                            dealer.GiveCard(bj.players[player_number]);
+                            score = dealer.CountScore(bj.players[player_number]);
                             break;
                         }
-
                     }
 
                     dealer.players_scores.insert({ player_number, score });
@@ -129,13 +130,13 @@ int main()
             }
 
             unsigned int d_score = dealer.CountScore(dealer);
-            while (d_score < bj.GetDealerStopsOn())
+            while (d_score <= bj.GetDealerStopsOn())
             {
                 dealer.GiveCard(dealer);
 
                 d_score = dealer.CountScore(dealer);
             }
-
+            //TODO: Баг. Иногда дилер показывает слишком много карт и, возможно, неправильно считает очки
             dealer.ShowCards();
 
             dealer.players_scores.insert({ 0, d_score });
@@ -143,6 +144,16 @@ int main()
             //Подсчет очков всех игроков, определение победителя, выдача выигрыша
             dealer.CheckScores();
             dealer.GiveWin(bj);
+
+            //Если банк = 0, то выход из игры
+            for (size_t player_number = 1; player_number < bj.GetNumberOfPlayers(); player_number++)
+            {
+                if (bj.players[player_number].GetBank() == 0)
+                {
+                    cout << bj.players[player_number].GetName() << " has 0 chips and leaves the game" << endl;
+                    bj.ErasePlayer(player_number);
+                }
+            }
             
 
             //Раунд закончился
