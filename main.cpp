@@ -5,8 +5,6 @@
 #include <sstream>
 #include <chrono> //может не работать в gcc или на unix
 
-//#define DEBUG
-
 #include "Blackjack.h"
 #include "IPlayer.h"
 #include "Dealer.h"
@@ -14,10 +12,14 @@
 
 using namespace std;
 
-
-//TODO Выход из игры (в т.ч. когда заканчивается банк)
-//TODO Страховка
-//Пофиксить баг, который происходит после Scores before check
+//TODO
+//Страховка (когда у дилера открыт туз)
+//Протестировать тузы
+//Сделать перемешку колоды: 4 колоды. Мешаются когда 
+//Декомпозировать побольше, меньше вызывать IPlayer извне
+//Пофиксить баг, который происходит после Scores before check (вроде пофикшено)
+//Бот
+//Сеть если будет время (TCP, или boost::asio)
 
 int main()
 {
@@ -35,7 +37,7 @@ int main()
 
         //Создаем игрока или игроков
         IPlayer player1(bj, "Никита");
-        //IPlayer player2(bj, "Leha");
+        IPlayer player2(bj);
         //добавляем игрока в вектор игроков
         
         
@@ -62,6 +64,11 @@ int main()
                 dealer.players_current_bets.insert({ player_number, bet });
             }
             
+ /*           for_each(bj.players.begin() + 1, bj.players.end(), [](IPlayer& player)
+                {
+                    dealer.players_current_bets.insert({ player_number, player.bet() });
+                });*/
+
             //Первая раздача
             //Дилер раздает игрокам
             for (size_t player_number = 1; player_number < bj.GetNumberOfPlayers(); player_number++)
@@ -78,7 +85,7 @@ int main()
                 bj.players[player_number].ShowCards();
             }
             
-
+            //Дилер дает себе
             for (size_t i = 0; i < 2; i++) //2 - количество стартовых карт
             {
                 dealer.GiveCard(dealer);
@@ -93,25 +100,26 @@ int main()
                 if (score < 21)
                 {
                     //Решение игрока
+
                     IPlayer& current_player = bj.players[player_number];
 
-                    while (true)
-                    {
+                    //while (true)
+                    //{
                         current_player.ShowGameDecisions(); //Показываем возможные решения
 
-                        string decision = current_player.MakeGameDecision(dealer, current_player, player_number);
+                        current_player.MakeGameDecision(dealer, current_player, player_number);
 
-                        score = dealer.CountScore(bj.players[player_number]);
+                        score = dealer.CountScore(current_player);
                         
 
-                        if (decision == "Stand" || decision == "stand" || decision == "3" || score >= 21) break;
-                        if (decision == "Double" || decision == "dobule" || decision == "2")
-                        {
-                            dealer.GiveCard(bj.players[player_number]);
-                            score = dealer.CountScore(bj.players[player_number]);
-                            break;
-                        }
-                    }
+                        //if (decision == "Stand" || decision == "stand" || decision == "3" || score >= 21) break;
+                        //if (decision == "Double" || decision == "dobule" || decision == "2")
+                        //{
+                        //    dealer.GiveCard(current_player);
+                        //    score = dealer.CountScore(current_player);
+                        //    //break;
+                        //}
+                    //}
 
                     dealer.players_scores.insert({ player_number, score });
 

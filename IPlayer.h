@@ -28,7 +28,7 @@ public:
 
     void bet_double(Dealer d, unsigned int player_number);
 
-    string MakeGameDecision(Dealer& d, IPlayer& player_himself, const unsigned int& player_number);
+    void MakeGameDecision(Dealer& d, IPlayer& player_himself, const unsigned int& player_number);
 
     void JoinGame();
 
@@ -59,6 +59,7 @@ public:
 protected:
     //Используется и IPlayer, и Dealer
     vector<pair<string, string>> hand; //сначала карта, потом масть
+    unsigned int score = 0;
 
     string SetName(string name);
     string name;
@@ -67,10 +68,10 @@ protected:
 private:
 
 
-    //unsigned int player_number = 1; //номер игрока, игрока под номером 0 не может быть
+    //unsigned int player_number = 1; //номер игрока, игрок под номером 0 это дилер
     unsigned int bank = 0; //кол-во фишек
     //unsigned int current_bet = 0; //сколько уже поставлено
-    string game_decision;
+
     const map<int, string> game_decisions{ {1, "Hit"}, {2, "Double"}, {3, "Stand"} };
 
 };

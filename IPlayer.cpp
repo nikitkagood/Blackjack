@@ -47,7 +47,7 @@ IPlayer::IPlayer(Blackjack& bj)
          this->name = player.name;
          this->bank = player.bank;
          this->hand = player.hand;
-         this->game_decision = player.game_decision;
+         //this->game_decision = player.game_decision;
          return *this;
      }
 
@@ -98,13 +98,18 @@ IPlayer::IPlayer(Blackjack& bj)
 
     }
 
-    string IPlayer::MakeGameDecision(Dealer& d, IPlayer& player_himself, const unsigned int& player_number)
+    void IPlayer::MakeGameDecision(Dealer& d, IPlayer& player_himself, const unsigned int& player_number)
     {
-        cin >> game_decision;
-        cout << endl;
-        d.ReceiveGameDecision(game_decision, player_himself, player_number);
+        string game_decision;
 
-        return game_decision;
+        do
+        {
+            cin >> game_decision;
+            cout << endl;
+        } 
+        while (!d.ReceiveGameDecision(game_decision, player_himself, player_number));
+        //если функция возвращает true, то выход из цикла
+
     }
 
     void IPlayer::JoinGame()

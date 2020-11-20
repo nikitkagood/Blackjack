@@ -58,48 +58,42 @@ public:
 
     }
 
-    void ReceiveGameDecision(const string& game_decision, IPlayer& player, const unsigned int& player_number)
+    bool ReceiveGameDecision(const string& game_decision, IPlayer& player, const unsigned int& player_number)
     {
-        if (game_decision == "1" || game_decision == "Hit" || game_decision == "hit")
+        while (true)
         {
-            Dealer::GiveCard(player);
-            player.ShowCards();
-        }
-        else if (game_decision == "2" || game_decision == "Double" || game_decision == "double")
-        {
-            //player.ChangeBank(players_current_bets[player_number] * 2);
-            //players_current_bets[player_number] *= 2;
-            //cout << player.GetName() << " betted double" << endl;
-            player.bet_double(*this, player_number);
-        }
-        else if (game_decision == "3" || game_decision == "Stand" || game_decision == "stand")
-        {
-            //nothing
-        }
-        else cout << "Wrong command" << endl;
+            if (Dealer::CountScore(player) >= 21)
+                break;
 
+            if (game_decision == "1" || game_decision == "Hit" || game_decision == "hit")
+            {
+                //цикл продолжается, т.к можно взять еще карту
+                Dealer::GiveCard(player);
+                cout << player.GetName() << " gets another card" << endl;
+                player.ShowCards();
+                
+            }
+            else if (game_decision == "2" || game_decision == "Double" || game_decision == "double")
+            {
+                player.bet_double(*this, player_number);
+                Dealer::GiveCard(player);
+                break;
+            }
+            else if (game_decision == "3" || game_decision == "Stand" || game_decision == "stand")
+            {
+                cout << player.GetName() << " stands" << endl;
+                break;
+            }
+            else
+            {
+                //цикл продолжается, т.к неверная команда
+                cout << "Wrong command" << endl;
+            }
+
+        }
+
+        return true;
     }
-
-    //void ReceiveGameDecision(const string& game_decision, IPlayer& player)
-    //{
-    //    if (game_decision == "1" || game_decision == "Hit" || game_decision == "hit")
-    //    {
-    //        Dealer::GiveCard(player);
-    //        player.ShowCards();
-    //    }
-    //    else if (game_decision == "2" || game_decision == "Double" || game_decision == "double")
-    //    {
-    //        //player.ChangeBank(players_current_bets[player_number] * 2);
-    //        //players_current_bets[player_number] *= 2;
-    //        //cout << GetName() << " betted double" << endl;
-    //    }
-    //    else if (game_decision == "3" || game_decision == "Stand" || game_decision == "stand")
-    //    {
-    //        //nothing
-    //    }
-    //    else cout << "Wrong command" << endl;
-
-    //}
 
     void CheckScores()
     {
@@ -150,9 +144,8 @@ public:
             if (players_draws.count(i.first)) //Если ничья
             {
                 ammount = players_current_bets[i.first];
-                //bj.players[i.first].ChangeBank(ammount);
                 bj.players[i.first].ChangeBank(ammount);
-                cout << " draw! " << bj.players[i.first].GetName() << " received his bet back: " << ammount << endl;
+                cout << "Draw! " << bj.players[i.first].GetName() << " received his bet back: " << ammount << endl;
             }
             else if (players_blackjack.count(i.first)) //Если блекджек
             {
@@ -160,7 +153,7 @@ public:
                 bj.players[i.first].ChangeBank(ammount);
                 cout << bj.players[i.first].GetName() << " has Blackjack!" << " He received 1.5x bet: " << ammount << endl;
             }
-            else
+            else //Просто победа
             {
                 ammount = players_current_bets[i.first] * 2;
                 bj.players[i.first].ChangeBank(ammount);
