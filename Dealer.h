@@ -25,12 +25,15 @@ public:
         player.ReceiveCard(make_pair(card, suits[suit_number]));
     }
 
-    void ShowOneCard() const
+    void ShowOneCard()
     {
         cout << "Dealer has:" << endl;
         cout << hand[0].first << " of " << hand[0].second << endl;
         cout << "### of ###" << endl;
         cout << endl;
+
+        if (hand[0].first == "Ace")
+            OfferInsurance();
     }
 
     const unsigned int CountScore(const IPlayer& player)
@@ -135,6 +138,11 @@ public:
         }
     }
 
+    void OfferInsurance()
+    {
+        cout << "Dealer has open ACE. He offers everyone insurance." << endl;
+    }
+
     void GiveWin(Blackjack& bj)
     {
         for (auto i : players_scores)
@@ -168,8 +176,10 @@ public:
     map<unsigned int, bool> players_blackjack; //player_number, if blackjack 
 
 
-
+#ifndef TESTING
 private:
+#endif // !TESTING
+
     void ResetRound() //только для вызова извне
     {
         players_current_bets.clear();

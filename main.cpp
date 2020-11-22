@@ -14,6 +14,8 @@ using namespace std;
 
 //TODO
 //Страховка (когда у дилера открыт туз)
+//Проверить и возможно переделать выдачу карт. 
+//Сейчас: 2 игрокам, 2 дилеру. Игроки играют. Потом дилер добирает. Возможно это не правильно
 //Протестировать тузы
 //Сделать перемешку колоды: 4 колоды. Мешаются когда 
 //Декомпозировать побольше, меньше вызывать IPlayer извне
@@ -44,7 +46,8 @@ int main()
 
         while (true) //игровой цикл
         {
-            bj.UpdateNumberOfPlayers(); //также проверяет есть ли игроки в игре
+            bj.UpdateNumberOfPlayers();
+            bj.CheckNumberOfPlayers();
             bj.CountRound();
             bj.ShowRoundNumber();
 
@@ -103,6 +106,7 @@ int main()
 
                     IPlayer& current_player = bj.players[player_number];
 
+                    //УБРАНО В MakeGameDecision
                     //while (true)
                     //{
                         current_player.ShowGameDecisions(); //Показываем возможные решения
@@ -111,7 +115,7 @@ int main()
 
                         score = dealer.CountScore(current_player);
                         
-
+                        //УБРАНО В MakeGameDecision
                         //if (decision == "Stand" || decision == "stand" || decision == "3" || score >= 21) break;
                         //if (decision == "Double" || decision == "dobule" || decision == "2")
                         //{

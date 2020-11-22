@@ -1,7 +1,8 @@
 {
   "ExpandedNodes": [
-    ""
+    "",
+    "\\Calc\\test"
   ],
-  "SelectedNode": "\\Dealer.h",
+  "SelectedNode": "\\IPlayer.cpp",
   "PreviewInSolutionExplorer": false
 }

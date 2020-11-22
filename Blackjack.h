@@ -30,6 +30,8 @@ public:
 
     void UpdateNumberOfPlayers();
 
+    void CheckNumberOfPlayers();
+
     void AddPlayer(const IPlayer& player);
 
     const void ShowRoundNumber() const;
@@ -49,8 +51,11 @@ public:
     void EndGame();
 
     vector<IPlayer> players;
-    
+
+#ifndef TESTING
 private:
+#endif // !TESTING
+
     //ќбъ€вленные значени€ - это стандартные правила
     unsigned int dealer_stops_on = 17;
     unsigned int bank_per_player = 100;

@@ -34,13 +34,6 @@ IPlayer::IPlayer(Blackjack& bj)
         bj.AddPlayer(*this);
     }
 
-     //IPlayer::IPlayer(const IPlayer& other)
-     //{
-     //}
-
-     //IPlayer::~IPlayer()
-     //{
-     //}
 
      IPlayer& IPlayer::operator=(const IPlayer& player)
      {

@@ -35,6 +35,10 @@ using namespace std;
     void Blackjack::UpdateNumberOfPlayers()
     {
         number_of_players = players.size();
+    }
+
+    void Blackjack::CheckNumberOfPlayers()
+    {
         if (number_of_players == 1) EndGame();
     }
 
