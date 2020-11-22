@@ -2,8 +2,6 @@
 #include "IPlayer.h"
 #include "Dealer.h"
 
-//#define DEBUG
-
 using namespace std;
 
     void Blackjack::SetRules(const unsigned int& dealer_stops_on, const unsigned int& bank_per_player)

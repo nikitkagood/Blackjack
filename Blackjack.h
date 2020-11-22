@@ -1,6 +1,7 @@
 #pragma once
 //Blackjack - это главный класс игры
 
+//#define TESTING
 
 //ќбъ€влени€, которые подгружаютс€ в другие классы тоже
 #include <iostream>
@@ -52,9 +53,7 @@ public:
 
     vector<IPlayer> players;
 
-#ifndef TESTING
 private:
-#endif // !TESTING
 
     //ќбъ€вленные значени€ - это стандартные правила
     unsigned int dealer_stops_on = 17;

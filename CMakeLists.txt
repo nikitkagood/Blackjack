@@ -10,7 +10,7 @@ add_subdirectory(deps/googletest)
 add_subdirectory(Test_main)
 
 #add_executable(Blackjack main.cpp "Blackjack.h" "IPlayer.h" "Dealer.h"  "AI_Player.h" "Blackjack.cpp" "IPlayer.cpp" )
-add_executable(Blackjack main.cpp "Blackjack.h" "IPlayer.h" "Dealer.h"  "AI_Player.h" "Blackjack.cpp" "IPlayer.cpp" "Test_main/Test_m.cpp")
+add_executable(Blackjack main.cpp "Blackjack.h" "IPlayer.h" "Dealer.h"  "AI_Player.h" "Blackjack.cpp" "IPlayer.cpp" "Test_main/Test_m.cpp" )
 
 #target_link_libraries(Blackjack Calc)
 target_link_libraries(Blackjack Test_m)

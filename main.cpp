@@ -23,6 +23,8 @@ using namespace std;
 //Бот
 //Сеть если будет время (TCP, или boost::asio)
 
+
+
 int main()
 {
     setlocale(0, "");
@@ -39,10 +41,8 @@ int main()
 
         //Создаем игрока или игроков
         IPlayer player1(bj, "Никита");
-        IPlayer player2(bj);
+        //IPlayer player2(bj);
         //добавляем игрока в вектор игроков
-        
-        
 
         while (true) //игровой цикл
         {
@@ -66,28 +66,28 @@ int main()
 
                 dealer.players_current_bets.insert({ player_number, bet });
             }
-            
- /*           for_each(bj.players.begin() + 1, bj.players.end(), [](IPlayer& player)
-                {
-                    dealer.players_current_bets.insert({ player_number, player.bet() });
-                });*/
 
-            //Первая раздача
-            //Дилер раздает игрокам
+            /*           for_each(bj.players.begin() + 1, bj.players.end(), [](IPlayer& player)
+                           {
+                               dealer.players_current_bets.insert({ player_number, player.bet() });
+                           });*/
+
+                           //Первая раздача
+                           //Дилер раздает игрокам
             for (size_t player_number = 1; player_number < bj.GetNumberOfPlayers(); player_number++)
             {
                 for (size_t i = 0; i < 2; i++) //2 - количество стартовых карт
                 {
                     dealer.GiveCard(bj.players[player_number]);
                 }
-                
+
             }
             //Показываем карты игроков
             for (size_t player_number = 1; player_number < bj.GetNumberOfPlayers(); player_number++)
             {
                 bj.players[player_number].ShowCards();
             }
-            
+
             //Дилер дает себе
             for (size_t i = 0; i < 2; i++) //2 - количество стартовых карт
             {
@@ -109,21 +109,21 @@ int main()
                     //УБРАНО В MakeGameDecision
                     //while (true)
                     //{
-                        current_player.ShowGameDecisions(); //Показываем возможные решения
+                    current_player.ShowGameDecisions(); //Показываем возможные решения
 
-                        current_player.MakeGameDecision(dealer, current_player, player_number);
+                    current_player.MakeGameDecision(dealer, current_player, player_number);
 
-                        score = dealer.CountScore(current_player);
-                        
-                        //УБРАНО В MakeGameDecision
-                        //if (decision == "Stand" || decision == "stand" || decision == "3" || score >= 21) break;
-                        //if (decision == "Double" || decision == "dobule" || decision == "2")
-                        //{
-                        //    dealer.GiveCard(current_player);
-                        //    score = dealer.CountScore(current_player);
-                        //    //break;
-                        //}
+                    score = dealer.CountScore(current_player);
+
+                    //УБРАНО В MakeGameDecision
+                    //if (decision == "Stand" || decision == "stand" || decision == "3" || score >= 21) break;
+                    //if (decision == "Double" || decision == "dobule" || decision == "2")
+                    //{
+                    //    dealer.GiveCard(current_player);
+                    //    score = dealer.CountScore(current_player);
+                    //    //break;
                     //}
+                //}
 
                     dealer.players_scores.insert({ player_number, score });
 
@@ -166,7 +166,7 @@ int main()
                     bj.ErasePlayer(player_number);
                 }
             }
-            
+
 
             //Раунд закончился
             bj.ResetRound(dealer);

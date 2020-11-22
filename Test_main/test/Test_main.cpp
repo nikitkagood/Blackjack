@@ -1,21 +1,32 @@
 //Testing the program with googletest library
-#define TESTING
 
 #include "gtest/gtest.h"
 #include "../../Blackjack.h"
 #include "../../IPlayer.h"
 #include "../../Dealer.h"
 
-TEST(Blackjack, CardScoreTest)
+
+TEST(Blackjack, AceScoreTest)
 {
     Blackjack bj;
-    //bj.SetRules(17, 100);
+    bj.SetRules(17, 100);
 
-    //Dealer d(bj);
-    //IPlayer p1(bj, "TestPlayer1");
+    Dealer d(bj);
 
-    //d.CountScore(p1);
+    IPlayer p1(bj, "TestPlayer1");
 
+    bj.CountRound();
+
+    p1.GetHandLink().push_back({ "Ace", "spades" });
+    p1.GetHandLink().push_back({ "Queen", "hearts" });
+
+    p1.ShowCards();
+
+    int score = d.CountScore(p1);
+    int expected_score = 21;
+
+    cout << "Score: " << score << "   Expected score: " << expected_score << "  ";
+    ASSERT_EQ(score, expected_score);
 }
 
 //TEST(Calc, Addition)

@@ -2,12 +2,11 @@
 
 //#define TESTING
 
-//#include <vector>
-
 #include "Blackjack.h"
 
 using namespace std;
 
+//#define TESTING
 
 class IPlayer
 {
@@ -51,16 +50,7 @@ public:
 
     void ChangeBank(const int& ammount);
 
-//#ifdef DEBUG
-//    ~IPlayer()
-//    {
-//        cout << "IPlayer destructor" << endl;
-//    }
-//#endif // DEBUG
-
-#ifndef TESTING
 protected:
-#endif // !TESTING
 
     //Used by IPlayer and Dealer
     vector<pair<string, string>> hand; //сначала карта, потом масть
@@ -70,9 +60,8 @@ protected:
     string name;
     unsigned int player_number = 0; //number 0 is dealer, not used yet
 
-#ifndef TESTING
 private:
-#endif // !TESTING
+
 
     unsigned int bank = 0; //ammount of chips
     //unsigned int current_bet = 0; 

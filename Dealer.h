@@ -4,6 +4,8 @@
 
 using namespace std;
 
+//#define TESTING
+
 class Dealer : public IPlayer
 {
 public:
@@ -175,10 +177,7 @@ public:
     map<unsigned int, bool> players_draws; //player_number, if draw
     map<unsigned int, bool> players_blackjack; //player_number, if blackjack 
 
-
-#ifndef TESTING
 private:
-#endif // !TESTING
 
     void ResetRound() //только для вызова извне
     {
