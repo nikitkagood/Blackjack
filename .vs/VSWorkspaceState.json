@@ -1,8 +1,11 @@
 {
   "ExpandedNodes": [
     "",
-    "\\Calc\\test"
+    "\\Calc",
+    "\\Calc\\test",
+    "\\Test_main",
+    "\\Test_main\\test"
   ],
-  "SelectedNode": "\\IPlayer.cpp",
+  "SelectedNode": "\\Test_main\\test\\Test_main.cpp",
   "PreviewInSolutionExplorer": false
 }

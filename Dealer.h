@@ -38,29 +38,63 @@ public:
             OfferInsurance();
     }
 
+    //const unsigned int CountScore(const IPlayer& player)
+    //{
+    //    unsigned int score1 = 0; //очки, где туз равен 1
+    //    unsigned int scoreA = 0; //туз равен 11
+    //    //unsigned int count_aces = 0;
+
+    //    //TODO: Проверить правильность подсчета тузов
+
+    //    auto hand = player.GetHand();
+    //    for (size_t i = 0; i < hand.size(); i++)
+    //    {
+    //        score1 += scores_map[hand[i].first];
+
+    //        scoreA += scores_map[hand[i].first];
+    //        if (hand[i].first == "Ace") scoreA += 10;
+    //    }
+
+    //    if (scoreA > score1 && scoreA <= 21)
+    //    {
+    //        return scoreA;
+    //    }
+    //    else return score1;
+
+    //}
+
     const unsigned int CountScore(const IPlayer& player)
     {
-        unsigned int score1 = 0; //очки, где туз равен 1
-        unsigned int scoreA = 0; //туз равен 11
-        //unsigned int count_aces = 0;
-
-        //TODO: Проверить правильность подсчета тузов
+        unsigned int score = 0; 
 
         auto hand = player.GetHand();
-        for (size_t i = 0; i < hand.size(); i++)
-        {
-            score1 += scores_map[hand[i].first];
+        unsigned int count_aces = 0;
 
-            scoreA += scores_map[hand[i].first];
-            if (hand[i].first == "Ace") scoreA += 10;
+        for (size_t i = 0; i < hand.size(); i++) //Counting not aces first
+        {
+            if (hand[i].first != "Ace")
+            {
+                score += scores_map[hand[i].first];
+            }
+            else if (hand[i].first == "Ace")
+            {
+                count_aces++;
+            }
+            else throw(runtime_error("Undefined card"));
         }
 
-        if (scoreA > score1 && scoreA <= 21)
-        {
-            return scoreA;
-        }
-        else return score1;
+        score += count_aces;
 
+        for (size_t i = 0; i < count_aces; i++)
+        {
+            if ((score + 10) <= 21) //If Ace, we add 10pts to score only if it will be below 21
+                                    //i.e. for example 5 of hearts + ace = 16, if we add another ace, the score will increase just by 1 
+            {
+                score += 10;
+            }
+        }
+
+        return score;
     }
 
     bool ReceiveGameDecision(const string& game_decision, IPlayer& player, const unsigned int& player_number)
@@ -106,7 +140,6 @@ public:
         ShowScores();
         cout << endl;
         
-        //TODO: ГДЕ-ТО ЗДЕСЬ БАГ
         unsigned int dealer_score = players_scores[0];
         players_scores.erase(0);
 
@@ -143,6 +176,8 @@ public:
     void OfferInsurance()
     {
         cout << "Dealer has open ACE. He offers everyone insurance." << endl;
+
+
     }
 
     void GiveWin(Blackjack& bj)
@@ -200,7 +235,7 @@ private:
         {"5", 5},
         {"6", 6},
         {"7", 7},
-        {"7", 7},
+        {"8", 8},
         {"9", 9},
         {"10", 10},
         {"Jack", 10},
