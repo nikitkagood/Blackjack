@@ -61,6 +61,18 @@ using namespace std;
         return dealer_stops_on;
     }
 
+    void Blackjack::CheckPlayersBanks()
+    {
+        for (size_t player_number = 1; player_number < GetNumberOfPlayers(); player_number++)
+        {
+            if (players[player_number].GetBank() == 0)
+            {
+                cout << players[player_number].GetName() << " has 0 chips and leaves the game" << endl;
+                ErasePlayer(player_number);
+            }
+        }
+    }
+
     //void Blackjack::CheckPlayersBanks() //не компилируется
     //{
     //    for (size_t i = 1; i < players.size(); i++)
@@ -95,6 +107,13 @@ using namespace std;
         {
             players[i].GetHandLink().clear();
         }
+    }
+
+    void Blackjack::ClearConsole()
+    {
+        //this_thread::sleep_for(chrono::seconds(5));
+
+        system("CLS");
     }
 
     void Blackjack::EndGame()

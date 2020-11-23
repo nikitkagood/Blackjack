@@ -3,6 +3,8 @@
 #include <map>
 #include <vector>
 #include <sstream>
+#include <thread>
+#include <Windows.h>
 #include <chrono> //может не работать в gcc или на unix
 
 #include "Blackjack.h"
@@ -28,34 +30,31 @@ using namespace std;
 int main()
 {
     setlocale(0, "");
-    srand(time(nullptr)); //генератор рандома для вытаскивания карт
+    srand(time(nullptr)); //Setting the seed for rangom generator
 
     try
     {
-        //Создаем игру и устанавливаем правила
+        //Creating the game and setting the rules
         Blackjack bj;
         bj.SetRules(17, 100);
 
-        //Создаем дилера
+        //Сreating dealer (only in this order)
         Dealer dealer(bj);
 
-        //Создаем игрока или игроков
+        //Creating players
         IPlayer player1(bj, "Никита");
         //IPlayer player2(bj);
-        //добавляем игрока в вектор игроков
 
-        while (true) //игровой цикл
+        while (true) //The game loop
         {
             bj.UpdateNumberOfPlayers();
             bj.CheckNumberOfPlayers();
             bj.CountRound();
             bj.ShowRoundNumber();
 
-            //Показать игроков
             bj.ShowPlayers();
 
-            //Раунд начался
-            //Ставки. Игроки не могут не ставить
+            //Bets. Players can't not to bet
             for (size_t player_number = 1; player_number < bj.GetNumberOfPlayers(); player_number++)
             {
                 unsigned int bet = 0;
@@ -67,13 +66,9 @@ int main()
                 dealer.players_current_bets.insert({ player_number, bet });
             }
 
-            /*           for_each(bj.players.begin() + 1, bj.players.end(), [](IPlayer& player)
-                           {
-                               dealer.players_current_bets.insert({ player_number, player.bet() });
-                           });*/
 
-                           //Первая раздача
-                           //Дилер раздает игрокам
+            //Starting dealing the cards
+            //Dealer gives cards to players
             for (size_t player_number = 1; player_number < bj.GetNumberOfPlayers(); player_number++)
             {
                 for (size_t i = 0; i < 2; i++) //2 - количество стартовых карт
@@ -82,56 +77,48 @@ int main()
                 }
 
             }
-            //Показываем карты игроков
+
+            //Showing player's cards
             for (size_t player_number = 1; player_number < bj.GetNumberOfPlayers(); player_number++)
             {
                 bj.players[player_number].ShowCards();
             }
 
-            //Дилер дает себе
+            //Dealer gives cards to himself
             for (size_t i = 0; i < 2; i++) //2 - количество стартовых карт
             {
                 dealer.GiveCard(dealer);
             }
             dealer.ShowOneCard();
 
-            //Проверка что уже не 21, решения игроков
+
+            if (dealer.GetHand()[0].first == "Ace")
+            {
+                dealer.OfferInsurance();
+            }
+
+
+            //Checking it's not 21 already. Letting players decide what to do
             for (size_t player_number = 1; player_number < bj.GetNumberOfPlayers(); player_number++)
             {
                 unsigned int score = dealer.CountScore(bj.players[player_number]);
 
                 if (score < 21)
                 {
-                    //Решение игрока
-
+                    //Player's decision
                     IPlayer& current_player = bj.players[player_number];
 
-                    //УБРАНО В MakeGameDecision
-                    //while (true)
-                    //{
-                    current_player.ShowGameDecisions(); //Показываем возможные решения
+                    current_player.ShowGameDecisions();
 
                     current_player.MakeGameDecision(dealer, current_player, player_number);
 
                     score = dealer.CountScore(current_player);
-
-                    //УБРАНО В MakeGameDecision
-                    //if (decision == "Stand" || decision == "stand" || decision == "3" || score >= 21) break;
-                    //if (decision == "Double" || decision == "dobule" || decision == "2")
-                    //{
-                    //    dealer.GiveCard(current_player);
-                    //    score = dealer.CountScore(current_player);
-                    //    //break;
-                    //}
-                //}
-
                     dealer.players_scores.insert({ player_number, score });
 
                 }
                 else if (score == 21)
                 {
-                    //21 с первых двух кард - это 1.5x выигрыш
-                    //Точно победа, но нужно проверить других игроков
+                    //21 from 2 first cards means 1.5x win
                     cout << "Blackjack!" << endl;
                     dealer.players_blackjack.insert({ player_number, true });
                     dealer.players_scores.insert({ player_number, score });
@@ -153,23 +140,17 @@ int main()
 
             dealer.players_scores.insert({ 0, d_score });
 
-            //Подсчет очков всех игроков, определение победителя, выдача выигрыша
+            //Counting all the scores
             dealer.CheckScores();
+            //Defining winners, giving away wins
             dealer.GiveWin(bj);
 
-            //Если банк = 0, то выход из игры
-            for (size_t player_number = 1; player_number < bj.GetNumberOfPlayers(); player_number++)
-            {
-                if (bj.players[player_number].GetBank() == 0)
-                {
-                    cout << bj.players[player_number].GetName() << " has 0 chips and leaves the game" << endl;
-                    bj.ErasePlayer(player_number);
-                }
-            }
+            //If bank == 0, player is exits the game
+            bj.CheckPlayersBanks();
 
-
-            //Раунд закончился
+            //The round has ended. Clearing variables
             bj.ResetRound(dealer);
+
         }
 
         throw runtime_error("Unexpected main loop exit");

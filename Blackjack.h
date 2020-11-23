@@ -41,19 +41,23 @@ public:
 
     unsigned int GetDealerStopsOn() const;
 
-    //void CheckPlayersBanks();
+    void CheckPlayersBanks();
 
-    void ErasePlayer(unsigned int player_number);
+
 
     void ResetRound(Dealer& d);
 
     void ResetPlayersHands();
+
+    void ClearConsole();
 
     void EndGame();
 
     vector<IPlayer> players;
 
 private:
+
+    void ErasePlayer(unsigned int player_number);
 
     //ќбъ€вленные значени€ - это стандартные правила
     unsigned int dealer_stops_on = 17;

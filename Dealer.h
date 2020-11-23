@@ -19,8 +19,8 @@ public:
 
     void GiveCard(IPlayer& player)
     {
-        int card_number = rand() % 12 + 0; // от 0 до 13
-        int suit_number = rand() % 3 + 0; // от 0 до 3
+        int card_number = rand() % 13 + 0; // from 0 до 12 included
+        int suit_number = rand() % 4 + 0; // from 0 to 3 included
 
         string card = deck.at(suits[suit_number])[card_number];
 
@@ -34,34 +34,7 @@ public:
         cout << "### of ###" << endl;
         cout << endl;
 
-        if (hand[0].first == "Ace")
-            OfferInsurance();
     }
-
-    //const unsigned int CountScore(const IPlayer& player)
-    //{
-    //    unsigned int score1 = 0; //очки, где туз равен 1
-    //    unsigned int scoreA = 0; //туз равен 11
-    //    //unsigned int count_aces = 0;
-
-    //    //TODO: Проверить правильность подсчета тузов
-
-    //    auto hand = player.GetHand();
-    //    for (size_t i = 0; i < hand.size(); i++)
-    //    {
-    //        score1 += scores_map[hand[i].first];
-
-    //        scoreA += scores_map[hand[i].first];
-    //        if (hand[i].first == "Ace") scoreA += 10;
-    //    }
-
-    //    if (scoreA > score1 && scoreA <= 21)
-    //    {
-    //        return scoreA;
-    //    }
-    //    else return score1;
-
-    //}
 
     const unsigned int CountScore(const IPlayer& player)
     {
@@ -136,7 +109,7 @@ public:
 
     void CheckScores()
     {
-        cout << "Scores before check" << endl;
+        cout << "DEBUG: Scores before check" << endl;
         ShowScores();
         cout << endl;
         
@@ -160,8 +133,8 @@ public:
             players_scores.erase(i);
         }
 
-        cout << "Scores after check" << endl;
-        ShowScores();
+        //cout << "Scores after check" << endl;
+        //ShowScores();
         cout << endl;
     }
 
@@ -175,7 +148,8 @@ public:
 
     void OfferInsurance()
     {
-        cout << "Dealer has open ACE. He offers everyone insurance." << endl;
+        cout << "Dealer has open Ace. He offers everyone insurance." << endl;
+
 
 
     }
