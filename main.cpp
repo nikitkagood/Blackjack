@@ -29,6 +29,8 @@ using namespace std;
 
 int main()
 {
+    SetConsoleTitle("Blackjack by Nikita Belov");
+
     setlocale(0, "");
     srand(time(nullptr)); //Setting the seed for rangom generator
 
