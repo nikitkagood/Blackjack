@@ -96,6 +96,13 @@ public:
                 cout << player.GetName() << " stands" << endl;
                 break;
             }
+            else if (player.GetIsInsurance() && game_decision == "4" || game_decision == "Make insurance" || game_decision == "make insurance")
+            {
+                //if dealer has Blackjack - player loses his bet and wins his insurance 2x (i.e. it's like draw)
+                //oterwise player loses his insurance and plays his usual bet
+                player.make_insurance(*this, player_number);
+                break;
+            }
             else
             {
                 //цикл продолжается, т.к неверная команда
@@ -138,6 +145,24 @@ public:
         cout << endl;
     }
 
+    void CheckInsurance()
+    {
+        if (Dealer::deck.size() == 2 && Dealer::CountScore(*this))
+        {
+            //Win insurance
+            for (auto i : players_scores)
+            {
+                if (players_insurance_bets.count(i.first))
+                {
+
+                }
+            }
+        }
+
+
+
+    }
+
     void ShowScores() //Только для дебага
     {
         for (auto i : players_scores)
@@ -146,11 +171,15 @@ public:
         }
     }
 
-    void OfferInsurance()
+    void OfferInsurance(Blackjack bj) //Changes flag isInsurance for all players
     {
-        cout << "Dealer has open Ace. He offers everyone insurance." << endl;
+        cout << "Dealer has open Ace. Players can make insurance." << endl;
 
-
+        for (size_t player_number = 1; player_number < bj.GetNumberOfPlayers(); player_number++)
+        {
+            //bj.players[player_number].ReceiveInsuranceOffer();
+            bj.players[player_number].MakeInsuranceDecision();
+        }
 
     }
 
@@ -182,6 +211,7 @@ public:
     }
 
     map<unsigned int, unsigned int> players_current_bets; //player_number, bet
+    map<unsigned int, unsigned int> players_insurance_bets; //player_number, bet
     map<unsigned int, unsigned int> players_scores; //player_number, score.  0 элемент это дилер
     map<unsigned int, bool> players_draws; //player_number, if draw
     map<unsigned int, bool> players_blackjack; //player_number, if blackjack 
@@ -191,6 +221,7 @@ private:
     void ResetRound() //только для вызова извне
     {
         players_current_bets.clear();
+        players_insurance_bets.clear();
         players_scores.clear();
         players_draws.clear();
         players_blackjack.clear(); 
@@ -200,6 +231,8 @@ private:
     //{
     //    player.ChangeBank(ammount);
     //}
+
+    bool isDealer = true;
 
     map<string, unsigned int> scores_map
     {

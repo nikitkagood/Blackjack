@@ -91,6 +91,46 @@ IPlayer::IPlayer(Blackjack& bj)
 
     }
 
+    //void IPlayer::make_insurance(Dealer d, unsigned int player_number)
+    //{
+    //    unsigned int insurance = (d.players_current_bets[player_number] * 0.5);
+    //    
+    //    if (bank >= insurance)
+    //    {
+    //        //обновляем банк игрока
+    //        bank -= insurance;
+    //        //обновляем ставки
+    //        d.players_insurance_bets[player_number] += insurance;
+
+    //        cout << IPlayer::GetName() << " made insurance" << endl;
+    //        cout << endl;
+    //    }
+    //    else
+    //    {
+    //        cout << "You don't have that much" << endl;
+    //    }
+    //}
+
+    void IPlayer::make_insurance()
+    {
+        unsigned int insurance = (current_bet * 0.5);
+
+        if (bank >= insurance)
+        {
+            //обновляем банк игрока
+            bank -= insurance;
+            //обновляем ставки
+            insurance_bet += insurance;
+
+            cout << IPlayer::GetName() << " made insurance" << endl;
+            cout << endl;
+        }
+        else
+        {
+            cout << "You don't have that much" << endl;
+        }
+    }
+
     void IPlayer::MakeGameDecision(Dealer& d, IPlayer& player_himself, const unsigned int& player_number)
     {
         string game_decision;
@@ -105,6 +145,35 @@ IPlayer::IPlayer(Blackjack& bj)
 
     }
 
+    void IPlayer::MakeInsuranceDecision()
+    {
+        string game_decision;
+
+        cout << "Do you want to make isurance? " << endl;
+        cout << "Y or N: ";
+        cin >> game_decision;
+        cout << endl;
+
+        while (true)
+        {
+            if (game_decision == "Y" || "y" || "yes" || "Yes")
+            {
+                make_insurance();
+                break;
+            }
+            else if (game_decision == "N" || "n" || "no" || "No")
+            {
+                //nothing
+                break;
+            }
+            else
+            {
+                cout << "Wrong command" << endl;
+            }
+        }
+
+    }
+
     void IPlayer::JoinGame()
     {
 
@@ -115,6 +184,11 @@ IPlayer::IPlayer(Blackjack& bj)
 
         hand.push_back(to_receive);
 
+    }
+
+    void IPlayer::ReceiveInsuranceOffer()
+    {
+        isInsurance = true;
     }
 
     void IPlayer::ShowCards() const
@@ -132,6 +206,10 @@ IPlayer::IPlayer(Blackjack& bj)
         for (auto i : game_decisions)
         {
             cout << i.first << ". " << i.second << "   ";
+        }
+        if (isInsurance)
+        {
+            cout << "4. " << "Make insurance";
         }
         cout << endl;
     }
@@ -154,6 +232,11 @@ IPlayer::IPlayer(Blackjack& bj)
     const unsigned int IPlayer::GetBank() const
     {
         return bank;
+    }
+
+    const bool IPlayer::GetIsInsurance() const
+    {
+        return isInsurance;
     }
 
 
