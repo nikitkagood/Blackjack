@@ -131,7 +131,7 @@ IPlayer::IPlayer(Blackjack& bj)
         }
     }
 
-    void IPlayer::MakeGameDecision(Dealer& d, IPlayer& player_himself, const unsigned int& player_number)
+    void IPlayer::MakeGameDecision(Dealer& d, const unsigned int& player_number)
     {
         string game_decision;
 
@@ -140,7 +140,7 @@ IPlayer::IPlayer(Blackjack& bj)
             cin >> game_decision;
             cout << endl;
         } 
-        while (!d.ReceiveGameDecision(game_decision, player_himself, player_number));
+        while (!d.ReceiveGameDecision(game_decision, *this, player_number));
         //если функция возвращает true, то выход из цикла
 
     }

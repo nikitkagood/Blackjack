@@ -28,7 +28,7 @@ public:
     //void make_insurance(Dealer d, unsigned int player_number);
     void make_insurance();
 
-    void MakeGameDecision(Dealer& d, IPlayer& player_himself, const unsigned int& player_number);
+    void MakeGameDecision(Dealer& d, const unsigned int& player_number);
 
     void MakeInsuranceDecision();
 

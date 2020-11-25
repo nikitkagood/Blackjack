@@ -82,26 +82,13 @@ int main()
 
 
             //Starting dealing the cards
-            //Dealer gives cards to players
-            for (size_t player_number = 1; player_number < bj.GetNumberOfPlayers(); player_number++)
-            {
-                for (size_t i = 0; i < 2; i++) //2 - количество стартовых карт
-                {
-                    dealer.GiveCard(bj.players[player_number]);
-                }
 
-            }
+            dealer.StartingDeal(bj);
 
             //Showing player's cards
             for (size_t player_number = 1; player_number < bj.GetNumberOfPlayers(); player_number++)
             {
                 bj.players[player_number].ShowCards();
-            }
-
-            //Dealer gives cards to himself
-            for (size_t i = 0; i < 2; i++) //2 - количество стартовых карт
-            {
-                dealer.GiveCard(dealer);
             }
             dealer.ShowOneCard();
 

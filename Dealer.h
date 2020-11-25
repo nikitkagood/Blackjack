@@ -27,6 +27,30 @@ public:
         player.ReceiveCard(make_pair(card, suits[suit_number]));
     }
 
+    void StartingDeal(Blackjack bj)
+    {
+        //1 card for players, 1 card for dealer and then again
+        for (size_t player_number = 1; player_number < bj.GetNumberOfPlayers(); player_number++)
+        {
+            GiveCard(bj.players[player_number]);
+        }
+
+        for (size_t i = 0; i < 1; i++)
+        {
+            GiveCard(*this);
+        }
+
+        for (size_t player_number = 1; player_number < bj.GetNumberOfPlayers(); player_number++)
+        {
+            GiveCard(bj.players[player_number]);
+        }
+
+        for (size_t i = 0; i < 1; i++)
+        {
+            GiveCard(*this);
+        }
+    }
+
     void ShowOneCard()
     {
         cout << "Dealer has:" << endl;
