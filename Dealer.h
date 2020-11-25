@@ -124,7 +124,7 @@ public:
             {
                 //if dealer has Blackjack - player loses his bet and wins his insurance 2x (i.e. it's like draw)
                 //oterwise player loses his insurance and plays his usual bet
-                player.make_insurance(*this, player_number);
+                player.make_insurance();
                 break;
             }
             else

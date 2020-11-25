@@ -111,7 +111,7 @@ int main()
 
                     current_player.ShowGameDecisions();
 
-                    current_player.MakeGameDecision(dealer, current_player, player_number);
+                    current_player.MakeGameDecision(dealer, player_number);
 
                     score = dealer.CountScore(current_player);
                     dealer.players_scores.insert({ player_number, score });
