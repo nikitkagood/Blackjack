@@ -8,7 +8,7 @@
 #include <chrono> //может не работать в gcc или на unix
 
 #include "Blackjack.h"
-#include "IPlayer.h"
+//#include "IPlayer.h"
 #include "Dealer.h"
 #include "AI_Player.h"
 
@@ -57,7 +57,7 @@ int main()
 
         //Creating players
         IPlayer player1(bj, "Никита");
-        //IPlayer player2(bj);
+        AI_Player bot(bj, "Бот Леха");
 
         while (true) //The game loop
         {
@@ -68,7 +68,7 @@ int main()
 
             bj.ShowPlayers();
 
-            //Bets. Players can't not to bet
+            //Bets. Players can't avoid betting
             for (size_t player_number = 1; player_number < bj.GetNumberOfPlayers(); player_number++)
             {
                 unsigned int bet = 0;
@@ -79,7 +79,6 @@ int main()
 
                 dealer.players_current_bets.insert({ player_number, bet });
             }
-
 
             //Starting dealing the cards
 
@@ -98,7 +97,6 @@ int main()
                 dealer.OfferInsurance(bj);
             }
 
-
             //Checking it's not 21 already. Letting players decide what to do
             for (size_t player_number = 1; player_number < bj.GetNumberOfPlayers(); player_number++)
             {
@@ -116,6 +114,13 @@ int main()
                     score = dealer.CountScore(current_player);
                     dealer.players_scores.insert({ player_number, score });
 
+                    //bj.players[player_number].ShowGameDecisions();
+
+                    //bj.players[player_number].MakeGameDecision(dealer, player_number);
+
+                    //score = dealer.CountScore(bj.players[player_number]);
+                    //dealer.players_scores.insert({ player_number, score });
+
                 }
                 else if (score == 21)
                 {
@@ -129,6 +134,7 @@ int main()
 
             }
 
+            //Dealer grabs cards
             unsigned int d_score = dealer.CountScore(dealer);
             while (d_score <= bj.GetDealerStopsOn())
             {
@@ -136,7 +142,7 @@ int main()
 
                 d_score = dealer.CountScore(dealer);
             }
-            //TODO: Баг. Иногда дилер показывает слишком много карт и, возможно, неправильно считает очки
+
             dealer.ShowCards();
 
             dealer.players_scores.insert({ 0, d_score });

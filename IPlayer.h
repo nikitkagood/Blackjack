@@ -11,26 +11,25 @@ using namespace std;
 class IPlayer
 {
 public:
-    IPlayer();
 
-    IPlayer(Blackjack& bj);
+
+    //IPlayer(Blackjack& bj); //Default name. Unused
 
     IPlayer(Blackjack& bj, const string& name);
 
-    //IPlayer(const IPlayer& other); //конструктор копирования
+    //IPlayer(const IPlayer& other); //Copy constructor, unused
 
     IPlayer& operator = (const IPlayer& player);
 
-    unsigned int bet();
+    virtual unsigned int bet();
 
     void bet_double(Dealer d, unsigned int player_number);
 
-    //void make_insurance(Dealer d, unsigned int player_number);
     void make_insurance();
 
-    void MakeGameDecision(Dealer& d, const unsigned int& player_number);
+    virtual void MakeGameDecision(Dealer& d, const unsigned int& player_number);
 
-    void MakeInsuranceDecision();
+    virtual void MakeInsuranceDecision();
 
     void JoinGame();
 
@@ -38,9 +37,9 @@ public:
 
     void GetPlayerNumber();
 
-    void ReceiveCard(const pair<string, string>& to_receive);
+    unsigned int GetInsuranceBet() const;
 
-    void ReceiveInsuranceOffer();
+    void ReceiveCard(const pair<string, string>& to_receive);
 
     void ShowCards() const;
 
@@ -55,28 +54,28 @@ public:
 
     const unsigned int GetBank() const;
 
-    const bool GetIsInsurance() const;
-
     void ChangeBank(const int& ammount);
 
-protected:
+    void Reset();
 
-    //Used by IPlayer and Dealer
-    vector<pair<string, string>> hand; //сначала карта, потом масть
-    unsigned int score = 0;
+protected:
+    IPlayer(); //Only for Dealer!
+
+    vector<pair<string, string>> hand; //first is card, second is suit 
+    //unsigned int score = 0;
 
     string SetName(string name);
     string name;
     unsigned int player_number = 0; //not used yet, 0 is always dealer
 
-private:
 
     unsigned int bank = 0; //ammount of chips
-    unsigned int current_bet = 0; 
-    unsigned int insurance_bet = 0; 
+    unsigned int current_bet = 0;
+    unsigned int insurance_bet = 0;
+
+private:
 
     const map<int, string> game_decisions{ {1, "Hit"}, {2, "Double"}, {3, "Stand"} };
-    bool isInsurance = false;
 
 };
 

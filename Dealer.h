@@ -27,7 +27,7 @@ public:
         player.ReceiveCard(make_pair(card, suits[suit_number]));
     }
 
-    void StartingDeal(Blackjack bj)
+    void StartingDeal(Blackjack& bj)
     {
         //1 card for players, 1 card for dealer and then again
         for (size_t player_number = 1; player_number < bj.GetNumberOfPlayers(); player_number++)
@@ -120,13 +120,6 @@ public:
                 cout << player.GetName() << " stands" << endl;
                 break;
             }
-            else if (player.GetIsInsurance() && game_decision == "4" || game_decision == "Make insurance" || game_decision == "make insurance")
-            {
-                //if dealer has Blackjack - player loses his bet and wins his insurance 2x (i.e. it's like draw)
-                //oterwise player loses his insurance and plays his usual bet
-                player.make_insurance();
-                break;
-            }
             else
             {
                 //цикл продолжается, т.к неверная команда
@@ -149,6 +142,7 @@ public:
 
         if (dealer_score > 21) dealer_score = 0;
         //после этого цикла в players_scores должны остаться только не проигравшие
+        //After this loop in players_scores must only remain players who haven't lost
         vector<int> players_to_erase;
         for (auto i : players_scores)
         {
@@ -169,18 +163,24 @@ public:
         cout << endl;
     }
 
-    void CheckInsurance()
+    void CheckInsurance(Blackjack bj)
     {
         if (Dealer::deck.size() == 2 && Dealer::CountScore(*this))
         {
             //Win insurance
-            for (auto i : players_scores)
+            //for (auto i : players_scores)
+            //{
+            //    //if (players_insurance_bets.count(i.first))
+
+            //}
+            for (auto p : bj.players)
             {
-                if (players_insurance_bets.count(i.first))
+                if (p.GetInsuranceBet() > 0)
                 {
 
                 }
             }
+
         }
 
 
@@ -235,21 +235,11 @@ public:
     }
 
     map<unsigned int, unsigned int> players_current_bets; //player_number, bet
-    map<unsigned int, unsigned int> players_insurance_bets; //player_number, bet
     map<unsigned int, unsigned int> players_scores; //player_number, score.  0 элемент это дилер
     map<unsigned int, bool> players_draws; //player_number, if draw
     map<unsigned int, bool> players_blackjack; //player_number, if blackjack 
 
 private:
-
-    void ResetRound() //только для вызова извне
-    {
-        players_current_bets.clear();
-        players_insurance_bets.clear();
-        players_scores.clear();
-        players_draws.clear();
-        players_blackjack.clear(); 
-    }
 
     //void ChangeBank(IPlayer& player, unsigned int ammount)
     //{
@@ -257,6 +247,16 @@ private:
     //}
 
     bool isDealer = true;
+
+    void ResetRound() //только для вызова извне
+    {
+        Dealer::hand.clear();
+
+        players_current_bets.clear();
+        players_scores.clear();
+        players_draws.clear();
+        players_blackjack.clear();
+    }
 
     map<string, unsigned int> scores_map
     {

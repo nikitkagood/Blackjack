@@ -73,21 +73,6 @@ using namespace std;
         }
     }
 
-    //void Blackjack::CheckPlayersBanks() //не компилируется
-    //{
-    //    for (size_t i = 1; i < players.size(); i++)
-    //    {
-    //        auto it = find(players.begin(), players.end(), i);
-    //        if (players[i].GetBank() <= 0)
-    //        {
-    //            cout << players[i].GetName() << " ran out of chips and left the game" << endl;
-    //            players.erase(it);
-    //        }
-
-    //        if (players.empty()) break;
-    //    }
-    //}
-
     void Blackjack::ErasePlayer(unsigned int player_number)
     {
         //players[player_number].~IPlayer();
@@ -97,15 +82,14 @@ using namespace std;
     void Blackjack::ResetRound(Dealer& d)
     {
         d.ResetRound();
-        d.GetHandLink().clear();
-        ResetPlayersHands();
+        ResetPlayers();
     }
 
-    void Blackjack::ResetPlayersHands()
+    void Blackjack::ResetPlayers()
     {
-        for (size_t i = 0; i < players.size(); i++)
+        for (size_t i = 1; i < players.size(); i++)
         {
-            players[i].GetHandLink().clear();
+            players[i].Reset();
         }
     }
 

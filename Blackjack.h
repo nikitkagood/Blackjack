@@ -43,11 +43,9 @@ public:
 
     void CheckPlayersBanks();
 
-
-
     void ResetRound(Dealer& d);
 
-    void ResetPlayersHands();
+    void ResetPlayers();
 
     void ClearConsole();
 

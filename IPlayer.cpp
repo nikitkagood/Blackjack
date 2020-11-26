@@ -8,19 +8,19 @@ IPlayer::IPlayer()
     //только для Dealer
 }
 
-IPlayer::IPlayer(Blackjack& bj)
-    {
-        //#ifdef DEBUG
-        //        cout << "IPlayer constructor" << endl;
-        //#endif // DEBUG
-
-        //JoinGame();
-        SetName("Player_" + to_string(bj.players.size() ));
-        bank = bj.GetBankPerPlayer();
-        bj.AddPlayer(*this);
-        
-
-    }
+//IPlayer::IPlayer(Blackjack& bj)
+//    {
+//        //#ifdef DEBUG
+//        //        cout << "IPlayer constructor" << endl;
+//        //#endif // DEBUG
+//
+//        //JoinGame();
+//        SetName("Player_" + to_string(bj.players.size() ));
+//        bank = bj.GetBankPerPlayer();
+//        bj.AddPlayer(*this);
+//        
+//
+//    }
 
      IPlayer::IPlayer(Blackjack& bj, const string& name)
     {
@@ -46,7 +46,8 @@ IPlayer::IPlayer(Blackjack& bj)
 
     unsigned int IPlayer::bet()
     {
-        cout << "Your bank is: " << GetBank() << endl;
+        //cout << "Your bank is: " << GetBank() << endl;
+        cout << GetName() << " has: " << GetBank() << " chips" << endl;
         cout << "Enter yor bet: ";
         unsigned int ammount;
         cin >> ammount;
@@ -76,9 +77,9 @@ IPlayer::IPlayer(Blackjack& bj)
         unsigned int bet = d.players_current_bets[player_number];
         if (bank >= bet * 2)
         {
-            //обновляем банк игрока
+            //Updated player's bank
             bank -= bet;
-            //обновляем ставки
+            //Updating bets
             d.players_current_bets[player_number] *= 2;
 
             cout << IPlayer::GetName() << " betted double" << endl;
@@ -90,26 +91,6 @@ IPlayer::IPlayer(Blackjack& bj)
         }
 
     }
-
-    //void IPlayer::make_insurance(Dealer d, unsigned int player_number)
-    //{
-    //    unsigned int insurance = (d.players_current_bets[player_number] * 0.5);
-    //    
-    //    if (bank >= insurance)
-    //    {
-    //        //обновляем банк игрока
-    //        bank -= insurance;
-    //        //обновляем ставки
-    //        d.players_insurance_bets[player_number] += insurance;
-
-    //        cout << IPlayer::GetName() << " made insurance" << endl;
-    //        cout << endl;
-    //    }
-    //    else
-    //    {
-    //        cout << "You don't have that much" << endl;
-    //    }
-    //}
 
     void IPlayer::make_insurance()
     {
@@ -156,12 +137,12 @@ IPlayer::IPlayer(Blackjack& bj)
 
         while (true)
         {
-            if (game_decision == "Y" || "y" || "yes" || "Yes")
+            if (game_decision == "Y" || game_decision == "y" || game_decision == "yes" || game_decision == "Yes")
             {
                 make_insurance();
                 break;
             }
-            else if (game_decision == "N" || "n" || "no" || "No")
+            else if (game_decision == "N" || game_decision == "n" || game_decision == "no" || game_decision == "No")
             {
                 //nothing
                 break;
@@ -179,16 +160,16 @@ IPlayer::IPlayer(Blackjack& bj)
 
     }
 
+    unsigned int IPlayer::GetInsuranceBet() const
+    {
+        return insurance_bet;
+    }
+
     void IPlayer::ReceiveCard(const pair<string, string>& to_receive)
     {
 
         hand.push_back(to_receive);
 
-    }
-
-    void IPlayer::ReceiveInsuranceOffer()
-    {
-        isInsurance = true;
     }
 
     void IPlayer::ShowCards() const
@@ -206,10 +187,6 @@ IPlayer::IPlayer(Blackjack& bj)
         for (auto i : game_decisions)
         {
             cout << i.first << ". " << i.second << "   ";
-        }
-        if (isInsurance)
-        {
-            cout << "4. " << "Make insurance";
         }
         cout << endl;
     }
@@ -234,11 +211,6 @@ IPlayer::IPlayer(Blackjack& bj)
         return bank;
     }
 
-    const bool IPlayer::GetIsInsurance() const
-    {
-        return isInsurance;
-    }
-
 
     //void IPlayer::loseGame(Blackjack bj)
     //{
@@ -261,6 +233,13 @@ IPlayer::IPlayer(Blackjack& bj)
     void IPlayer::ChangeBank(const int& ammount)
     {
         bank += ammount;
+    }
+
+    void IPlayer::Reset()
+    {
+        hand.clear();
+        current_bet = 0;
+        insurance_bet = 0;
     }
 
 
