@@ -1,6 +1,7 @@
 #include "Blackjack.h"
 #include "IPlayer.h"
 #include "Dealer.h"
+#include "AI_Player.h"
 
 using namespace std;
 
@@ -15,7 +16,7 @@ using namespace std;
         cout << "Players are: " << endl;
         for (size_t i = 1; i < players.size(); i++)
         {
-            cout << i << ". " << players[i].GetName() << endl;
+            cout << i << ". " << players[i]->GetName() << endl;
         }
         cout << endl;
     }
@@ -40,7 +41,13 @@ using namespace std;
         if (number_of_players == 1) EndGame();
     }
 
-    void Blackjack::AddPlayer(const IPlayer& player)
+    void Blackjack::AddPlayer(IPlayer* player)
+    {
+        //players.push_back(new IPlayer(player));
+        players.push_back(player);
+    }
+
+    void Blackjack::AddAIPlayer(AI_Player* player)
     {
         players.push_back(player);
     }
@@ -65,9 +72,9 @@ using namespace std;
     {
         for (size_t player_number = 1; player_number < GetNumberOfPlayers(); player_number++)
         {
-            if (players[player_number].GetBank() == 0)
+            if (players[player_number]->GetBank() == 0)
             {
-                cout << players[player_number].GetName() << " has 0 chips and leaves the game" << endl;
+                cout << players[player_number]->GetName() << " has 0 chips and leaves the game" << endl;
                 ErasePlayer(player_number);
             }
         }
@@ -89,7 +96,7 @@ using namespace std;
     {
         for (size_t i = 1; i < players.size(); i++)
         {
-            players[i].Reset();
+            players[i]->Reset();
         }
     }
 

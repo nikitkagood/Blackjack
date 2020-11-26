@@ -14,7 +14,7 @@ public:
     Dealer(Blackjack& bj)
     {
         SetName("Dealer");
-        bj.AddPlayer(*this);
+        bj.AddPlayer(this);
     }
 
     void GiveCard(IPlayer& player)
@@ -32,7 +32,7 @@ public:
         //1 card for players, 1 card for dealer and then again
         for (size_t player_number = 1; player_number < bj.GetNumberOfPlayers(); player_number++)
         {
-            GiveCard(bj.players[player_number]);
+            GiveCard(*bj.players[player_number]);
         }
 
         for (size_t i = 0; i < 1; i++)
@@ -42,7 +42,7 @@ public:
 
         for (size_t player_number = 1; player_number < bj.GetNumberOfPlayers(); player_number++)
         {
-            GiveCard(bj.players[player_number]);
+            GiveCard(*bj.players[player_number]);
         }
 
         for (size_t i = 0; i < 1; i++)
@@ -173,13 +173,13 @@ public:
             //    //if (players_insurance_bets.count(i.first))
 
             //}
-            for (auto p : bj.players)
-            {
-                if (p.GetInsuranceBet() > 0)
-                {
+            //for (auto p : bj.players)
+            //{
+            //    if (p.GetInsuranceBet() > 0)
+            //    {
 
-                }
-            }
+            //    }
+            //}
 
         }
 
@@ -202,7 +202,7 @@ public:
         for (size_t player_number = 1; player_number < bj.GetNumberOfPlayers(); player_number++)
         {
             //bj.players[player_number].ReceiveInsuranceOffer();
-            bj.players[player_number].MakeInsuranceDecision();
+            bj.players[player_number]->MakeInsuranceDecision();
         }
 
     }
@@ -216,20 +216,20 @@ public:
             if (players_draws.count(i.first)) //Если ничья
             {
                 ammount = players_current_bets[i.first];
-                bj.players[i.first].ChangeBank(ammount);
-                cout << "Draw! " << bj.players[i.first].GetName() << " received his bet back: " << ammount << endl;
+                bj.players[i.first]->ChangeBank(ammount);
+                cout << "Draw! " << bj.players[i.first]->GetName() << " received his bet back: " << ammount << endl;
             }
             else if (players_blackjack.count(i.first)) //Если блекджек
             {
                 ammount = players_current_bets[i.first] * 2 * 1.5;
-                bj.players[i.first].ChangeBank(ammount);
-                cout << bj.players[i.first].GetName() << " has Blackjack!" << " He received 1.5x bet: " << ammount << endl;
+                bj.players[i.first]->ChangeBank(ammount);
+                cout << bj.players[i.first]->GetName() << " has Blackjack!" << " He received 1.5x bet: " << ammount << endl;
             }
             else //Просто победа
             {
                 ammount = players_current_bets[i.first] * 2;
-                bj.players[i.first].ChangeBank(ammount);
-                cout << bj.players[i.first].GetName() << " wins!" << " He received: " << ammount << endl;
+                bj.players[i.first]->ChangeBank(ammount);
+                cout << bj.players[i.first]->GetName() << " wins!" << " He received: " << ammount << endl;
             }
         }
     }

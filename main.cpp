@@ -74,7 +74,7 @@ int main()
                 unsigned int bet = 0;
                 while (bet <= 0)
                 {
-                    bet = bj.players[player_number].bet();
+                    bet = bj.players[player_number]->bet();
                 }
 
                 dealer.players_current_bets.insert({ player_number, bet });
@@ -87,7 +87,7 @@ int main()
             //Showing player's cards
             for (size_t player_number = 1; player_number < bj.GetNumberOfPlayers(); player_number++)
             {
-                bj.players[player_number].ShowCards();
+                bj.players[player_number]->ShowCards();
             }
             dealer.ShowOneCard();
 
@@ -100,18 +100,18 @@ int main()
             //Checking it's not 21 already. Letting players decide what to do
             for (size_t player_number = 1; player_number < bj.GetNumberOfPlayers(); player_number++)
             {
-                unsigned int score = dealer.CountScore(bj.players[player_number]);
+                unsigned int score = dealer.CountScore(*bj.players[player_number]);
 
                 if (score < 21)
                 {
                     //Player's decision
-                    IPlayer& current_player = bj.players[player_number];
+                    IPlayer* current_player = bj.players[player_number];
 
-                    current_player.ShowGameDecisions();
+                    current_player->ShowGameDecisions();
 
-                    current_player.MakeGameDecision(dealer, player_number);
+                    current_player->MakeGameDecision(dealer, player_number);
 
-                    score = dealer.CountScore(current_player);
+                    score = dealer.CountScore(*current_player);
                     dealer.players_scores.insert({ player_number, score });
 
                     //bj.players[player_number].ShowGameDecisions();

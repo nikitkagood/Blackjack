@@ -31,7 +31,7 @@ IPlayer::IPlayer()
         //JoinGame();
         SetName(name);
         bank = bj.GetBankPerPlayer();
-        bj.AddPlayer(*this);
+        bj.AddPlayer(this);
     }
 
 
@@ -241,6 +241,8 @@ IPlayer::IPlayer()
         current_bet = 0;
         insurance_bet = 0;
     }
+
+
 
 
 

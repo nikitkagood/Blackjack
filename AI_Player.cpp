@@ -7,7 +7,8 @@ AI_Player::AI_Player(Blackjack& bj, const string& name)
     //JoinGame();
     SetName(name);
     bank = bj.GetBankPerPlayer();
-    bj.AddPlayer(*this);
+    //bj.AddPlayer(*this);
+    bj.AddAIPlayer(this);
 }
 
 unsigned int AI_Player::bet()

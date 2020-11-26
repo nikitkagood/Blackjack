@@ -16,6 +16,7 @@ using namespace std;
 
 class IPlayer;
 class Dealer;
+class AI_Player;
 
 class Blackjack
 {
@@ -33,7 +34,13 @@ public:
 
     void CheckNumberOfPlayers();
 
-    void AddPlayer(const IPlayer& player);
+    void AddPlayer(IPlayer* player);
+
+    void AddAIPlayer(AI_Player* player);
+
+    //void AddPlayer(const IPlayer& player);
+
+    //void AddAIPlayer(const AI_Player& player);
 
     const void ShowRoundNumber() const;
 
@@ -51,7 +58,7 @@ public:
 
     void EndGame();
 
-    vector<IPlayer> players;
+    vector<IPlayer*> players;
 
 private:
 
