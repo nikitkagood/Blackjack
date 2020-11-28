@@ -23,12 +23,7 @@ using namespace std;
 
 //Можно не хранить если блэкджек. Если у игрока всего две карты и они в сумме дают 21 - это оно и есть
 
-//Проверить и возможно переделать выдачу карт. 
-//Сейчас: 2 игрокам, 2 дилеру. Игроки играют. Потом дилер добирает. Возможно это не правильно
-
 //Лучше реализовать скрытую карту через флаг isHidden и убрать метод ShowOneCard
-
-//Сделать перемешку колоды: 4 колоды. Мешаются когда сыграна 1/3 шуза
 
 //Декомпозировать побольше, меньше вызывать IPlayer извне
 //Напр. сохранить ставку в IPlayer
@@ -72,16 +67,15 @@ int main()
             for (size_t player_number = 1; player_number < bj.GetNumberOfPlayers(); player_number++)
             {
                 unsigned int bet = 0;
-                while (bet <= 0)
+                while (bj.players[player_number]->GetCurrentBet() <= 0)
                 {
-                    bet = bj.players[player_number]->bet();
+                    bj.players[player_number]->bet();
                 }
 
-                dealer.players_current_bets.insert({ player_number, bet });
+                //dealer.players_current_bets.insert({ player_number, bet });
             }
 
             //Starting dealing the cards
-
             dealer.StartingDeal(bj);
 
             //Showing player's cards
@@ -151,6 +145,7 @@ int main()
             dealer.CheckScores();
             //Defining winners, giving away wins
             dealer.GiveWin(bj);
+            dealer.CheckInsurance(bj);
 
             //If bank == 0, player is exits the game
             bj.CheckPlayersBanks();

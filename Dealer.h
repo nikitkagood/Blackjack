@@ -19,12 +19,15 @@ public:
 
     void GiveCard(IPlayer& player)
     {
-        int card_number = rand() % 13 + 0; // from 0 до 12 included
-        int suit_number = rand() % 4 + 0; // from 0 to 3 included
+        //int card_number = rand() % 13 + 0; // from 0 до 12 included
+        //int suit_number = rand() % 4 + 0; // from 0 to 3 included
+        //int deck_number = rand() % 5 + 0; // from 0 to 4 included
 
-        string card = deck.at(suits[suit_number])[card_number];
+        //Cards are given from the end due to vector implementation
+        pair<string, string> card = shoe.back();
+        shoe.pop_back();
 
-        player.ReceiveCard(make_pair(card, suits[suit_number]));
+        player.ReceiveCard(card);
     }
 
     void StartingDeal(Blackjack& bj)
@@ -111,7 +114,7 @@ public:
             }
             else if (game_decision == "2" || game_decision == "Double" || game_decision == "double")
             {
-                player.bet_double(*this, player_number);
+                player.bet_double();
                 Dealer::GiveCard(player);
                 break;
             }
@@ -141,10 +144,9 @@ public:
         players_scores.erase(0);
 
         if (dealer_score > 21) dealer_score = 0;
-        //после этого цикла в players_scores должны остаться только не проигравшие
-        //After this loop in players_scores must only remain players who haven't lost
+
         vector<int> players_to_erase;
-        for (auto i : players_scores)
+        for (auto i : players_scores)  //After this loop in players_scores must only remain players who haven't lost
         {
             if (i.second > 21 || i.second < dealer_score)
                 //players_scores.erase(i.first);
@@ -165,26 +167,19 @@ public:
 
     void CheckInsurance(Blackjack bj)
     {
-        if (Dealer::deck.size() == 2 && Dealer::CountScore(*this))
+        if (Dealer::hand.size() == 2 && Dealer::CountScore(*this) == 21)
         {
             //Win insurance
-            //for (auto i : players_scores)
-            //{
-            //    //if (players_insurance_bets.count(i.first))
-
-            //}
-            //for (auto p : bj.players)
-            //{
-            //    if (p.GetInsuranceBet() > 0)
-            //    {
-
-            //    }
-            //}
-
+            for (auto p : bj.players)
+            {
+                int i_bet = p->GetInsuranceBet();
+                if (i_bet > 0)
+                {
+                    p->ChangeBank(i_bet * 2);
+                }
+            }
+            //Losses are not checked, cause they will be cleared automatically at the end of the round
         }
-
-
-
     }
 
     void ShowScores() //Только для дебага
@@ -207,6 +202,33 @@ public:
 
     }
 
+    //void GiveWin(Blackjack& bj)
+    //{
+    //    for (auto i : players_scores)
+    //    {
+    //        unsigned int ammount = 0;
+
+    //        if (players_draws.count(i.first)) //Если ничья
+    //        {
+    //            ammount = players_current_bets[i.first];
+    //            bj.players[i.first]->ChangeBank(ammount);
+    //            cout << "Draw! " << bj.players[i.first]->GetName() << " received his bet back: " << ammount << endl;
+    //        }
+    //        else if (players_blackjack.count(i.first)) //Если блекджек
+    //        {
+    //            ammount = players_current_bets[i.first] * 2 * 1.5;
+    //            bj.players[i.first]->ChangeBank(ammount);
+    //            cout << bj.players[i.first]->GetName() << " has Blackjack!" << " He received 1.5x bet: " << ammount << endl;
+    //        }
+    //        else //Просто победа
+    //        {
+    //            ammount = players_current_bets[i.first] * 2;
+    //            bj.players[i.first]->ChangeBank(ammount);
+    //            cout << bj.players[i.first]->GetName() << " wins!" << " He received: " << ammount << endl;
+    //        }
+    //    }
+    //}
+
     void GiveWin(Blackjack& bj)
     {
         for (auto i : players_scores)
@@ -215,36 +237,55 @@ public:
 
             if (players_draws.count(i.first)) //Если ничья
             {
-                ammount = players_current_bets[i.first];
+                ammount = bj.players[i.first]->GetCurrentBet();
                 bj.players[i.first]->ChangeBank(ammount);
                 cout << "Draw! " << bj.players[i.first]->GetName() << " received his bet back: " << ammount << endl;
             }
             else if (players_blackjack.count(i.first)) //Если блекджек
             {
-                ammount = players_current_bets[i.first] * 2 * 1.5;
+                ammount = bj.players[i.first]->GetCurrentBet() * 2 * 1.5;
                 bj.players[i.first]->ChangeBank(ammount);
                 cout << bj.players[i.first]->GetName() << " has Blackjack!" << " He received 1.5x bet: " << ammount << endl;
             }
             else //Просто победа
             {
-                ammount = players_current_bets[i.first] * 2;
+                ammount = bj.players[i.first]->GetCurrentBet() * 2;
                 bj.players[i.first]->ChangeBank(ammount);
                 cout << bj.players[i.first]->GetName() << " wins!" << " He received: " << ammount << endl;
             }
         }
     }
 
-    map<unsigned int, unsigned int> players_current_bets; //player_number, bet
+    void ResetShoe()
+    {
+        shoe.reserve(208);
+        for (size_t a = 0; a < 4; a++) //4 decks
+        {
+            for (size_t i = 0; i < 4; i++) //4 suits
+            {
+                for (size_t j = 0; j < 13; j++) //13 cards
+                {
+                    shoe.push_back({ cards_template[j], suits[i] });
+                }
+            }
+        }
+        random_shuffle(shoe.begin(), shoe.end());
+    }
+
+    void CheckShoe()
+    {
+        if (shoe.size() <= 208 / 100 * 66)
+        {
+            ResetShoe();
+        }
+    }
+
+    //map<unsigned int, unsigned int> players_current_bets; //player_number, bet
     map<unsigned int, unsigned int> players_scores; //player_number, score.  0 элемент это дилер
     map<unsigned int, bool> players_draws; //player_number, if draw
     map<unsigned int, bool> players_blackjack; //player_number, if blackjack 
 
 private:
-
-    //void ChangeBank(IPlayer& player, unsigned int ammount)
-    //{
-    //    player.ChangeBank(ammount);
-    //}
 
     bool isDealer = true;
 
@@ -252,7 +293,7 @@ private:
     {
         Dealer::hand.clear();
 
-        players_current_bets.clear();
+        //players_current_bets.clear();
         players_scores.clear();
         players_draws.clear();
         players_blackjack.clear();
@@ -275,7 +316,7 @@ private:
         {"Ace", 1}
     };
 
-    const vector<string> deck_template
+    const vector<string> cards_template
     {
         "2",
         "3",
@@ -294,13 +335,29 @@ private:
 
     const vector<string> suits{ "clubs", "diamonds", "hearts", "spades" };
 
-    //TODO: В игре (в шузе) 4 колоды. Или добавить проверку
-    const map<string, vector<string>> deck
-    {
-        { suits[0], deck_template },
-        { suits[1], deck_template },
-        { suits[2], deck_template },
-        { suits[3], deck_template }
+    vector<pair<string, string>> shoe; //card, suit
 
-    };
+    //TODO: В игре (в шузе) 4 колоды. Или добавить проверку
+    //const map<string, vector<string>> deck_template
+    //{
+    //    { suits[0], cards_template },
+    //    { suits[1], cards_template },
+    //    { suits[2], cards_template},
+    //    { suits[3], cards_template }
+
+    //};
+
+    //vector<pair<string, vector<string>>> deck_template
+    //{
+    //    { suits[0], cards_template },
+    //    { suits[1], cards_template },
+    //    { suits[2], cards_template},
+    //    { suits[3], cards_template }
+
+    //};
+
+    //vector<map<string, vector<string>>> shoe
+    //{
+    //    deck_template, deck_template, deck_template, deck_template
+    //};
 };

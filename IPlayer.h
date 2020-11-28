@@ -21,9 +21,10 @@ public:
 
     IPlayer& operator = (const IPlayer& player);
 
-    virtual unsigned int bet();
+    virtual void bet();
+    // virtual unsigned int bet();
 
-    void bet_double(Dealer d, unsigned int player_number);
+    void bet_double();
 
     void make_insurance();
 
@@ -36,6 +37,8 @@ public:
     void SetPlayerNumber();
 
     void GetPlayerNumber();
+
+    const unsigned int GetCurrentBet() const;
 
     unsigned int GetInsuranceBet() const;
 

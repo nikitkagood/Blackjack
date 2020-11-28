@@ -44,7 +44,7 @@ IPlayer::IPlayer()
          return *this;
      }
 
-    unsigned int IPlayer::bet()
+    void IPlayer::bet()
     {
         //cout << "Your bank is: " << GetBank() << endl;
         cout << GetName() << " has: " << GetBank() << " chips" << endl;
@@ -55,32 +55,32 @@ IPlayer::IPlayer()
         {
             cout << "You can't bet nothing" << endl;
             cout << endl;
-            return 0;
+            //return 0;
         }
         else if (bank >= ammount)
         {
             bank -= ammount;
-            cout << "Your bet is " << ammount << endl;
+            cout << GetName() << " betted " << ammount << endl;
             cout << endl;
-            return ammount;
+            current_bet += ammount;
+            //return ammount;
         }
         else
         {
             cout << "You don't have that much" << endl;
             cout << endl;
-            return 0;
+            //return 0;
         }
     }
 
-    void IPlayer::bet_double(Dealer d, unsigned int player_number)
+    void IPlayer::bet_double()
     {
-        unsigned int bet = d.players_current_bets[player_number];
-        if (bank >= bet * 2)
+        if (bank >= current_bet * 2)
         {
             //Updated player's bank
-            bank -= bet;
+            bank -= current_bet;
             //Updating bets
-            d.players_current_bets[player_number] *= 2;
+            current_bet *= 2;
 
             cout << IPlayer::GetName() << " betted double" << endl;
             cout << endl;
@@ -158,6 +158,11 @@ IPlayer::IPlayer()
     void IPlayer::JoinGame()
     {
 
+    }
+
+    const unsigned int IPlayer::GetCurrentBet() const
+    {
+        return current_bet;
     }
 
     unsigned int IPlayer::GetInsuranceBet() const

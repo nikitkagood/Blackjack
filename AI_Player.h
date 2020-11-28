@@ -10,7 +10,8 @@ class AI_Player : public IPlayer
 public:
     AI_Player(Blackjack& bj, const string& name);
 
-    unsigned int bet() override;
+    //unsigned int bet() override;
+    void bet() override;
 
     unsigned int DecideBet();
 

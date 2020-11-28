@@ -11,7 +11,7 @@ AI_Player::AI_Player(Blackjack& bj, const string& name)
     bj.AddAIPlayer(this);
 }
 
-unsigned int AI_Player::bet()
+void AI_Player::bet()
 {
     cout << GetName() << " has: " << GetBank() << " chips" << endl;
     //cout << "Enter yor bet: ";
@@ -23,20 +23,21 @@ unsigned int AI_Player::bet()
     {
         cout << "You can't bet nothing" << endl;
         cout << endl;
-        return 0;
+        //return 0;
     }
     else if (bank >= ammount)
     {
         bank -= ammount;
-        //cout << "Your bet is " << ammount << endl;
+        cout << GetName() << " betted " << ammount << endl;
         cout << endl;
-        return ammount;
+        current_bet += ammount;
+        //return ammount;
     }
     else
     {
         cout << "You don't have that much" << endl;
         cout << endl;
-        return 0;
+        //return 0;
     }
 }
 
