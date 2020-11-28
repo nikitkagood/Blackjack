@@ -54,8 +54,9 @@ using namespace std;
 
     const void Blackjack::ShowRoundNumber() const
     {
+        cout << "####################" << endl;
         cout << "Round " << round_number << endl;
-        cout << "###################" << endl;
+        cout << "####################" << endl;
     }
 
     void Blackjack::CountRound()

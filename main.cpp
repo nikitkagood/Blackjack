@@ -58,6 +58,7 @@ int main()
         {
             bj.UpdateNumberOfPlayers();
             bj.CheckNumberOfPlayers();
+            dealer.CheckShoe();
             bj.CountRound();
             bj.ShowRoundNumber();
 
@@ -107,13 +108,6 @@ int main()
 
                     score = dealer.CountScore(*current_player);
                     dealer.players_scores.insert({ player_number, score });
-
-                    //bj.players[player_number].ShowGameDecisions();
-
-                    //bj.players[player_number].MakeGameDecision(dealer, player_number);
-
-                    //score = dealer.CountScore(bj.players[player_number]);
-                    //dealer.players_scores.insert({ player_number, score });
 
                 }
                 else if (score == 21)

@@ -14,6 +14,7 @@ public:
     Dealer(Blackjack& bj)
     {
         SetName("Dealer");
+        ResetShoe();
         bj.AddPlayer(this);
     }
 
@@ -120,7 +121,7 @@ public:
             }
             else if (game_decision == "3" || game_decision == "Stand" || game_decision == "stand")
             {
-                cout << player.GetName() << " stands" << endl;
+                cout << player.GetName() << " stands" << endl << endl;
                 break;
             }
             else

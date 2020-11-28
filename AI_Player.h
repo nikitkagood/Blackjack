@@ -17,6 +17,8 @@ public:
 
     void MakeGameDecision(Dealer& d, const unsigned int& player_number) override;
 
+    void ShowGameDecisions() {}; //empty
+
     string DecideGameDecision();
 
     void MakeInsuranceDecision() override;
