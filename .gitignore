@@ -31,6 +31,14 @@
 *.out
 *.app
 
+# Build results
+[Dd]ebug/
+[Dd]ebugPublic/
+[Rr]elease/
+[Rr]eleases/
+x64/
+x86/
+
 CMakeLists.txt.user
 CMakeCache.txt
 CMakeFiles
@@ -52,6 +60,9 @@ _deps
 .idea/**/usage.statistics.xml
 .idea/**/dictionaries
 .idea/**/shelf
+*.suo
+*.user
+*.userosscache
 
 # Generated files
 .idea/**/contentModel.xml
@@ -91,7 +102,7 @@ cmake-build-*/
 # File-based project format
 *.iws
 
-# Visual Studio
+# Visual Studio cache/options directory
 .vs/
 
 # IntelliJ
