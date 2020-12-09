@@ -3,9 +3,9 @@
 #include <map>
 #include <vector>
 #include <sstream>
-#include <thread>
+//#include <thread>
 #include <Windows.h>
-#include <chrono> //может не работать в gcc или на unix
+//#include <chrono> //может не работать в gcc или на unix
 
 #include "Blackjack.h"
 //#include "IPlayer.h"
@@ -28,7 +28,7 @@ using namespace std;
 //Декомпозировать побольше, меньше вызывать IPlayer извне
 //Напр. сохранить ставку в IPlayer
 
-//Бот
+//Реализовать преимущество дилера в том, что он не ходит, если игроки набрали больше 21
 
 //Сеть если будет время (TCP, QT сокеты или boost::asio), echo сервер
 
@@ -39,7 +39,7 @@ int main()
     SetConsoleTitle("Blackjack by Nikita Belov");
 
     setlocale(0, "");
-    srand(time(nullptr)); //Setting the seed for rangom generator
+    //srand(time(nullptr)); //Setting the seed for rangom generator
 
     try
     {

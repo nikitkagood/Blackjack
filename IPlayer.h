@@ -65,20 +65,16 @@ protected:
     IPlayer(); //Only for Dealer!
 
     vector<pair<string, string>> hand; //first is card, second is suit 
-    //unsigned int score = 0;
 
     string SetName(string name);
     string name;
     unsigned int player_number = 0; //not used yet, 0 is always dealer
-
 
     unsigned int bank = 0; //ammount of chips
     unsigned int current_bet = 0;
     unsigned int insurance_bet = 0;
 
 private:
-
     const map<int, string> game_decisions{ {1, "Hit"}, {2, "Double"}, {3, "Stand"} };
-
 };
 
